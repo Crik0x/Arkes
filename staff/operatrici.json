@@ -568,6 +568,10 @@
         {
           "key": "top",
           "scadenza": "2026-05-10"
+        },
+        {
+          "key": "promo",
+          "scadenza": "2026-05-06"
         }
       ],
       "sconto": 10,
