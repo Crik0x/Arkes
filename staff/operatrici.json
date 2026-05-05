@@ -572,6 +572,18 @@
         {
           "key": "promo",
           "scadenza": "2026-05-06"
+        },
+        {
+          "key": "consult",
+          "scadenza": null
+        },
+        {
+          "key": "signature",
+          "scadenza": null
+        },
+        {
+          "key": "new_",
+          "scadenza": null
         }
       ],
       "sconto": 10,
