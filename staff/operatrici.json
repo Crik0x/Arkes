@@ -562,5 +562,16 @@
       ]
     }
   ],
-  "service_meta": {}
+  "service_meta": {
+    "laser_donna_viso": {
+      "badges": [
+        {
+          "key": "top",
+          "scadenza": "2026-05-10"
+        }
+      ],
+      "sconto": null,
+      "scontoFine": null
+    }
+  }
 }
