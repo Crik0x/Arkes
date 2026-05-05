@@ -570,8 +570,8 @@
           "scadenza": "2026-05-10"
         }
       ],
-      "sconto": null,
-      "scontoFine": null
+      "sconto": 10,
+      "scontoFine": "2026-05-07"
     }
   }
 }
