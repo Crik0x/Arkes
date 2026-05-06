@@ -682,7 +682,7 @@
           "scadenza": null
         }
       ],
-      "sconto": 10,
+      "sconto": null,
       "scontoFine": null
     }
   },
@@ -692,7 +692,7 @@
       "cat": "Laser",
       "nome": "Epilazione Laser – Viso Donna",
       "durata": 15,
-      "prezzo": 10
+      "prezzo": 15
     },
     {
       "id": "laser_donna_corpo",
