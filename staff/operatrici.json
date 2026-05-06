@@ -674,5 +674,16 @@
       ]
     }
   ],
-  "service_meta": {}
+  "service_meta": {
+    "laser_donna_viso": {
+      "badges": [
+        {
+          "key": "signature",
+          "scadenza": null
+        }
+      ],
+      "sconto": null,
+      "scontoFine": null
+    }
+  }
 }
