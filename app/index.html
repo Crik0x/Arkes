@@ -1,0 +1,2319 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Arkés Network — Simulatore Strategico</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A87C;
+  --gold-light: #F5ECD8;
+  --gold-dark: #8a6a3a;
+  --black: #1C1410;
+  --cream: #FAF7F4;
+  --warm: #F5EDE8;
+  --rose: #C4687A;
+  --text: #2a2218;
+  --text-muted: #7a6a5a;
+  --text-light: #b0a090;
+  --border: rgba(201,168,124,0.2);
+  --border-strong: rgba(201,168,124,0.4);
+  --success: #2d7a4f;
+  --warning: #c4880a;
+  --danger: #b03030;
+  --card-bg: #ffffff;
+  --page-bg: #FAF7F4;
+  --input-bg: #ffffff;
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow: 0 2px 16px rgba(28,20,16,0.07);
+  --shadow-lg: 0 8px 32px rgba(28,20,16,0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--page-bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* HEADER */
+.header {
+  background: var(--black);
+  padding: 28px 20px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(201,168,124,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-eyebrow {
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.header h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: 32px;
+  color: var(--cream);
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.header-sub {
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(250,247,244,0.5);
+  letter-spacing: 0.05em;
+}
+
+/* NAV TABS */
+.nav-tabs {
+  display: flex;
+  background: var(--black);
+  border-top: 1px solid rgba(201,168,124,0.15);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.nav-tabs::-webkit-scrollbar { display: none; }
+.nav-tab {
+  flex: 0 0 auto;
+  padding: 14px 18px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: rgba(250,247,244,0.45);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+}
+.nav-tab.active {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
+/* MAIN */
+.main { padding: 20px 16px 80px; max-width: 700px; margin: 0 auto; }
+
+/* SECTIONS */
+.section { display: none; }
+.section.active { display: block; }
+
+/* CARDS */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+.card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--black);
+  margin-bottom: 4px;
+}
+.card-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+  font-weight: 300;
+}
+.gold-line {
+  width: 32px;
+  height: 1px;
+  background: var(--gold);
+  margin-bottom: 14px;
+}
+
+/* FORM ELEMENTS */
+.field-group { margin-bottom: 20px; }
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.field-row-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+.input-wrap { position: relative; }
+.input-prefix {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold);
+  font-weight: 500;
+  font-size: 15px;
+  pointer-events: none;
+}
+.input-suffix {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 13px;
+  pointer-events: none;
+}
+input[type="number"], input[type="text"], select {
+  width: 100%;
+  padding: 13px 12px 13px 28px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  font-family: 'Jost', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text);
+  background: var(--input-bg);
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+input[type="number"]:focus, input[type="text"]:focus, select:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+input.no-prefix { padding-left: 12px; }
+input.with-suffix { padding-right: 36px; }
+
+/* SLIDER */
+.slider-wrap { margin-bottom: 20px; }
+.slider-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.slider-label { font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+.slider-value { font-size: 16px; font-weight: 500; color: var(--gold); min-width: 52px; text-align: right; }
+input[type="range"] {
+  width: 100%;
+  -webkit-appearance: none;
+  height: 4px;
+  background: var(--border-strong);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gold);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(201,168,124,0.4);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gold);
+  cursor: pointer;
+  border: none;
+}
+
+/* RESULT BOXES */
+.result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.result-box {
+  background: var(--warm);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  padding: 14px 12px;
+  text-align: center;
+}
+.result-box.highlight {
+  background: var(--black);
+  border-color: var(--gold);
+}
+.result-box.good { background: rgba(45,122,79,0.08); border-color: rgba(45,122,79,0.3); }
+.result-box.warn { background: rgba(196,136,10,0.08); border-color: rgba(196,136,10,0.3); }
+.result-box.bad { background: rgba(176,48,48,0.08); border-color: rgba(176,48,48,0.3); }
+.result-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.result-box.highlight .result-label { color: rgba(250,247,244,0.5); }
+.result-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--gold);
+  line-height: 1;
+}
+.result-box.highlight .result-value { color: var(--gold); }
+.result-box.good .result-value { color: var(--success); }
+.result-box.warn .result-value { color: var(--warning); }
+.result-box.bad .result-value { color: var(--danger); }
+.result-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+.result-box.highlight .result-sub { color: rgba(250,247,244,0.4); }
+
+/* ALERT BOXES */
+.alert {
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 14px;
+  border-left: 3px solid;
+}
+.alert-good { background: rgba(45,122,79,0.07); border-color: var(--success); color: #1a5a35; }
+.alert-warn { background: rgba(196,136,10,0.07); border-color: var(--warning); color: #7a5008; }
+.alert-bad { background: rgba(176,48,48,0.07); border-color: var(--danger); color: #7a1a1a; }
+.alert-info { background: var(--gold-light); border-color: var(--gold); color: var(--gold-dark); }
+.alert strong { font-weight: 500; }
+
+/* TABLE */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.data-table th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border-strong);
+}
+.data-table td {
+  padding: 11px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: middle;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr.total-row td {
+  font-weight: 500;
+  border-top: 1.5px solid var(--border-strong);
+  border-bottom: none;
+  color: var(--black);
+}
+.td-gold { color: var(--gold); font-weight: 500; }
+.td-right { text-align: right; }
+.td-muted { color: var(--text-muted); font-size: 13px; }
+
+/* SECTION DIVIDER */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0 18px;
+}
+.section-divider-line { flex: 1; height: 1px; background: var(--border); }
+.section-divider-text { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-light); }
+
+/* BADGE */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+.badge-gold { background: var(--gold-light); color: var(--gold-dark); }
+.badge-green { background: rgba(45,122,79,0.1); color: var(--success); }
+.badge-red { background: rgba(176,48,48,0.1); color: var(--danger); }
+
+/* ==================== TAB RETE v3 — DASHBOARD + ALBERO INTERATTIVO ==================== */
+.rt-glass{
+  background:rgba(255,255,255,0.58);
+  -webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);
+  border:1px solid rgba(255,255,255,0.65);border-radius:var(--radius);
+  box-shadow:0 8px 32px rgba(28,20,16,0.10), inset 0 1px 0 rgba(255,255,255,0.7);
+}
+
+/* ---- full-bleed: solo questa tab esce dai 700px del .main ---- */
+#tab-rete.active{
+  margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);
+  padding:0 18px 48px;
+}
+.rt-dash{max-width:1340px;margin:0 auto;}
+
+/* ---- METRICHE TOP (sempre visibili) ---- */
+.rt-metrics-bar{position:sticky;top:6px;z-index:7;margin-bottom:14px;padding:12px 14px;}
+.rt-metrics-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.rt-metrics-title{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--black);}
+.rt-metrics-title b{color:var(--gold-dark);font-weight:600;}
+.rt-metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.rt-metric{background:rgba(255,255,255,0.6);border:1px solid var(--border);border-radius:12px;padding:11px 12px;text-align:center;}
+.rt-metric.rt-metric-hi{background:var(--black);border-color:var(--gold);}
+.rt-metric-l{font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--text-light);margin-bottom:4px;}
+.rt-metric.rt-metric-hi .rt-metric-l{color:rgba(250,247,244,.55);}
+.rt-metric-v{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--gold-dark);line-height:1;}
+.rt-metric.rt-metric-hi .rt-metric-v{color:var(--gold);}
+.rt-metric-s{font-size:10px;color:var(--text-light);margin-top:3px;}
+.rt-metric.rt-metric-hi .rt-metric-s{color:rgba(250,247,244,.4);}
+@media(max-width:760px){.rt-metrics{grid-template-columns:repeat(3,1fr);}.rt-metric:nth-child(4),.rt-metric:nth-child(5){grid-column:span 1;}}
+@media(max-width:480px){.rt-metrics{grid-template-columns:repeat(2,1fr);}}
+
+/* ---- GRIGLIA CORPO ---- */
+.rt-body{display:grid;grid-template-columns:282px minmax(0,1fr) 332px;gap:14px;align-items:start;}
+@media(max-width:1100px){.rt-body{grid-template-columns:1fr;}.rt-col-center{order:-1;}}
+.rt-panel{padding:16px 16px;margin-bottom:14px;}
+.rt-panel-title{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--black);margin-bottom:4px;}
+.rt-panel-sub{font-size:11.5px;color:var(--text-muted);margin-bottom:12px;line-height:1.5;}
+
+/* toolbar */
+.rt-toolbar{display:flex;flex-direction:column;gap:8px;}
+.rt-chip{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 14px;border-radius:11px;cursor:pointer;
+  font-family:'Jost',sans-serif;font-size:12.5px;font-weight:500;letter-spacing:.02em;
+  background:rgba(255,255,255,0.6);border:1px solid var(--border-strong);color:var(--text);transition:all .16s;width:100%;}
+.rt-chip:hover{border-color:var(--gold);color:var(--gold-dark);}
+.rt-chip.rt-chip-gold{background:var(--gold);border-color:var(--gold);color:#fff;}
+.rt-chip.rt-chip-gold:hover{background:var(--gold-dark);color:#fff;}
+.rt-chip svg{width:15px;height:15px;}
+.rt-chip-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.rt-chip-row .rt-chip{width:100%;}
+
+/* legenda */
+.rt-legend{display:flex;flex-wrap:wrap;gap:7px 12px;}
+.rt-leg{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted);}
+.rt-leg-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,.15);}
+.rt-leg-line{width:18px;height:3px;border-radius:2px;flex-shrink:0;}
+
+/* ---- CANVAS ---- */
+.rt-canvas-card{padding:0;overflow:hidden;}
+.rt-canvas-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px 10px;flex-wrap:wrap;}
+.rt-focus-bar{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);flex-wrap:wrap;}
+.rt-focus-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;background:var(--gold-light);color:var(--gold-dark);font-weight:500;}
+.rt-mini{padding:5px 11px;font-size:11px;width:auto;border-radius:18px;}
+.rt-zoom{display:flex;gap:6px;}
+.rt-zoom button{width:32px;height:32px;border-radius:9px;border:1px solid var(--border-strong);background:rgba(255,255,255,0.7);color:var(--gold-dark);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.rt-zoom button:hover{border-color:var(--gold);background:var(--gold-light);}
+.rt-canvas{position:relative;height:min(76vh,760px);overflow:hidden;touch-action:none;
+  background:radial-gradient(circle at 28% 16%,rgba(201,168,124,0.18),transparent 42%),radial-gradient(circle at 80% 78%,rgba(196,104,122,0.12),transparent 46%),linear-gradient(160deg,#fbf8f4 0%,#f3eadf 100%);
+  border-top:1px solid var(--border);cursor:grab;}
+.rt-canvas.rt-grabbing{cursor:grabbing;}
+.rt-canvas svg{display:block;will-change:transform;}
+.rt-hint{position:absolute;left:14px;bottom:12px;font-size:10.5px;color:var(--text-light);background:rgba(255,255,255,.6);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:5px 10px;border-radius:8px;pointer-events:none;}
+
+/* SVG NODE/EDGE */
+.rt-node-circle{stroke:#fff;stroke-width:2.5;transition:r .35s cubic-bezier(.34,1.56,.64,1),fill .4s,opacity .3s;}
+.rt-node:hover .rt-node-circle{stroke:var(--gold);}
+.rt-node.rt-sel .rt-node-circle{stroke:var(--black);stroke-width:3.5;}
+.rt-node-init{font-family:'Jost',sans-serif;font-weight:500;fill:#fff;text-anchor:middle;dominant-baseline:central;pointer-events:none;}
+.rt-node-name{font-family:'Jost',sans-serif;font-size:11px;fill:var(--text);text-anchor:middle;pointer-events:none;}
+.rt-node-vol{font-family:'Jost',sans-serif;font-size:9.5px;fill:var(--text-muted);text-anchor:middle;pointer-events:none;}
+.rt-dim{opacity:.3;}
+.rt-locked .rt-node-circle{stroke-dasharray:3 3;opacity:.55;}
+.rt-plus{cursor:pointer;}
+.rt-plus circle{fill:#fff;stroke:var(--gold);stroke-width:1.5;transition:all .15s;}
+.rt-plus:hover circle{fill:var(--gold);}
+.rt-plus line{stroke:var(--gold-dark);stroke-width:1.8;pointer-events:none;}
+.rt-plus:hover line{stroke:#fff;}
+.rt-lock{font-size:11px;text-anchor:middle;pointer-events:none;}
+.rt-edge{fill:none;stroke:var(--border-strong);stroke-width:1.6;transition:stroke .3s,opacity .3s;}
+.rt-edge.rt-edge-active{stroke:rgba(201,168,124,.6);stroke-width:2;}
+.rt-edge.rt-edge-lit{stroke:#E8821E;stroke-width:3.4;filter:url(#rtGlow);stroke-dasharray:7 7;}
+@media (prefers-reduced-motion: no-preference){
+  .rt-edge-lit{animation:rtflow .9s linear infinite;}
+  @keyframes rtflow{to{stroke-dashoffset:-28;}}
+  .rt-node.rt-pulse .rt-node-circle{animation:rtpulse 2.4s ease-in-out infinite;}
+  @keyframes rtpulse{0%,100%{filter:drop-shadow(0 0 0 rgba(232,130,30,0));}50%{filter:drop-shadow(0 0 7px rgba(232,130,30,.6));}}
+}
+
+/* ---- PANNELLO ANALISI (destra) ---- */
+.rt-side-empty{font-size:12.5px;color:var(--text-light);text-align:center;padding:10px 0;}
+.rt-side-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.rt-side-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:500;font-size:15px;flex-shrink:0;}
+.rt-side-nm{font-family:'Cormorant Garamond',serif;font-size:21px;color:var(--black);line-height:1.05;}
+.rt-side-meta{font-size:11px;color:var(--text-muted);}
+.rt-side-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.rt-stat{background:rgba(255,255,255,.6);border:1px solid var(--border);border-radius:10px;padding:10px 12px;}
+.rt-stat-l{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-light);margin-bottom:3px;}
+.rt-stat-v{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--gold-dark);line-height:1;}
+.rt-legs-mini{margin-bottom:6px;}
+.rt-leg-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.rt-leg-row:last-child{border-bottom:none;}
+.rt-leg-rank{width:20px;height:20px;border-radius:50%;background:var(--gold-light);color:var(--gold-dark);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.rt-leg-bar{flex:1;height:6px;border-radius:3px;background:var(--border);overflow:hidden;}
+.rt-leg-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gold),#E8821E);}
+
+/* blocchi & linee */
+.rt-blocks{display:flex;flex-direction:column;gap:10px;}
+.rt-block{border:1px solid var(--border);border-radius:12px;padding:11px 13px;background:rgba(255,255,255,.5);}
+.rt-block.rt-block-locked{opacity:.6;border-style:dashed;}
+.rt-block-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.rt-block-title{font-size:11.5px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--text);}
+.rt-block-legs{display:flex;flex-direction:column;gap:6px;}
+.rt-bleg{display:flex;align-items:center;gap:8px;font-size:12px;}
+.rt-bleg-name{min-width:70px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.rt-bleg-prog{flex:1;height:6px;border-radius:3px;background:var(--border);overflow:hidden;}
+.rt-bleg-prog span{display:block;height:100%;border-radius:3px;background:var(--gold);}
+.rt-bleg-prog span.rt-sat{background:#2d7a4f;}
+.rt-bleg-d{font-size:11px;color:var(--text-light);min-width:40px;text-align:right;}
+
+.rt-stato-badge{display:inline-block;padding:3px 9px;border-radius:14px;font-size:10px;font-weight:500;letter-spacing:.04em;}
+.rt-stato-simulato{background:var(--warm);color:var(--text-muted);}
+.rt-stato-invitato{background:rgba(196,136,10,.14);color:#7a5008;}
+.rt-stato-verificato{background:rgba(45,122,79,.14);color:#1a5a35;}
+
+/* ---- POPOVER HOVER (stats, dopo 3s) ---- */
+.rt-pop{position:fixed;z-index:200;min-width:210px;max-width:280px;padding:14px 16px;border-radius:14px;
+  opacity:0;transform:scale(.92) translateY(4px);pointer-events:none;transition:opacity .16s,transform .16s cubic-bezier(.34,1.56,.64,1);
+  background:rgba(255,255,255,0.8);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);
+  border:1px solid rgba(255,255,255,0.7);box-shadow:0 12px 40px rgba(28,20,16,0.22);}
+.rt-pop.rt-show{opacity:1;transform:scale(1) translateY(0);pointer-events:auto;}
+.rt-pop-nm{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--black);margin-bottom:2px;}
+.rt-pop-meta{font-size:10.5px;color:var(--text-muted);margin-bottom:10px;}
+.rt-pop-row{display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:4px 0;color:var(--text-muted);}
+.rt-pop-row b{color:var(--gold-dark);font-weight:600;}
+.rt-pop-div{height:1px;background:var(--border);margin:8px 0;}
+.rt-pop-leg{display:flex;justify-content:space-between;font-size:11.5px;padding:3px 0;color:var(--text);}
+.rt-pop-leg .rt-pop-net{color:#2d7a4f;font-weight:500;}
+
+/* ---- POPOVER PROFILO (impostazioni) ---- */
+.rt-pp{position:fixed;z-index:260;width:330px;max-width:calc(100vw - 24px);max-height:84vh;overflow-y:auto;padding:18px;border-radius:18px;
+  opacity:0;transform:scale(.95) translateY(6px);pointer-events:none;transition:opacity .18s,transform .2s cubic-bezier(.34,1.56,.64,1);
+  background:rgba(255,255,255,0.86);-webkit-backdrop-filter:blur(22px) saturate(1.4);backdrop-filter:blur(22px) saturate(1.4);
+  border:1px solid rgba(255,255,255,0.75);box-shadow:0 18px 54px rgba(28,20,16,0.26);}
+.rt-pp.rt-show{opacity:1;transform:scale(1) translateY(0);pointer-events:auto;}
+.rt-pp-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.rt-pp-av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:500;font-size:16px;flex-shrink:0;}
+.rt-pp-nm{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--black);line-height:1.05;}
+.rt-pp-meta{font-size:11px;color:var(--text-muted);}
+.rt-pp-x{margin-left:auto;background:none;border:0;font-size:20px;color:var(--text-light);cursor:pointer;line-height:1;padding:2px 6px;}
+.rt-field{margin-bottom:12px;}
+.rt-field label{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:6px;font-weight:500;}
+.rt-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.rt-pp .input-wrap input{padding:10px 10px 10px 26px;font-size:14px;}
+.rt-pp .input-wrap input.no-prefix{padding-left:10px;}
+.rt-seg{display:flex;background:var(--warm);border:1px solid var(--border);border-radius:10px;padding:4px;gap:4px;}
+.rt-seg button{flex:1;background:none;border:0;color:var(--text-muted);font-family:'Jost',sans-serif;font-size:12px;padding:8px 4px;border-radius:7px;cursor:pointer;transition:all .15s;}
+.rt-seg button.on{background:var(--gold);color:#fff;font-weight:500;}
+.rt-check{display:flex;align-items:flex-start;gap:9px;padding:11px 12px;border:1px solid var(--border-strong);border-radius:11px;background:var(--gold-light);cursor:pointer;margin-bottom:4px;}
+.rt-check input{width:17px;height:17px;margin-top:1px;flex-shrink:0;}
+.rt-check-txt{font-size:11.5px;color:var(--gold-dark);line-height:1.4;}
+.rt-check-txt b{font-weight:600;}
+.rt-pp-addbox{border:1px dashed var(--border-strong);border-radius:12px;padding:13px;margin:12px 0;background:rgba(255,255,255,.4);display:none;}
+.rt-pp-addbox.open{display:block;}
+.rt-pp-divider{height:1px;background:var(--border);margin:14px 0;}
+.rt-pp-foot{display:flex;gap:9px;margin-top:6px;}
+.rt-pp-foot .rt-chip{flex:1;}
+.rt-del{background:none;border:0;color:var(--danger);font-size:11.5px;font-family:'Jost',sans-serif;cursor:pointer;padding:9px;width:100%;margin-top:4px;}
+@media(max-width:560px){
+  .rt-pp{position:fixed;left:0!important;right:0;bottom:0;top:auto!important;width:100%;max-width:100%;border-radius:20px 20px 0 0;transform:translateY(40px);}
+  .rt-pp.rt-show{transform:translateY(0);}
+}
+
+/* ---- MODALE PARAMETRI (bloccante) ---- */
+.rt-modal-bg{position:fixed;inset:0;z-index:320;background:rgba(28,20,16,0.4);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;padding:18px;opacity:0;pointer-events:none;transition:opacity .22s;}
+.rt-modal-bg.rt-show{opacity:1;pointer-events:auto;}
+.rt-modal{width:100%;max-width:520px;max-height:88vh;overflow-y:auto;background:rgba(255,255,255,0.92);
+  -webkit-backdrop-filter:blur(20px) saturate(1.4);backdrop-filter:blur(20px) saturate(1.4);border:1px solid rgba(255,255,255,0.75);
+  border-radius:20px;padding:24px;transform:scale(.94);transition:transform .26s cubic-bezier(.22,1,.36,1);box-shadow:0 20px 60px rgba(28,20,16,0.3);}
+.rt-modal-bg.rt-show .rt-modal{transform:scale(1);}
+.rt-modal h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:25px;color:var(--black);margin-bottom:2px;}
+.rt-modal-sub{font-size:12px;color:var(--text-muted);margin-bottom:18px;line-height:1.5;}
+.rt-params-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.rt-params-grid label{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-light);display:block;margin-bottom:4px;}
+.rt-params-grid .input-wrap input{padding:10px 8px;font-size:14px;}
+@media(max-width:560px){.rt-params-grid{grid-template-columns:repeat(2,1fr);}}
+.rt-modal-foot{display:flex;gap:10px;margin-top:22px;}
+.rt-modal-foot .btn{margin:0;}
+
+/* TIPS */
+.tip-list { list-style: none; }
+.tip-list li {
+  display: flex;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+.tip-list li:last-child { border-bottom: none; }
+.tip-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.tip-text strong { color: var(--text); font-weight: 500; }
+
+/* SCENARIO PILLS */
+.scenario-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.scenario-pill {
+  padding: 8px 16px;
+  border-radius: 24px;
+  border: 1.5px solid var(--border-strong);
+  font-size: 13px;
+  font-weight: 400;
+  cursor: pointer;
+  background: var(--card-bg);
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+.scenario-pill.active {
+  background: var(--black);
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+/* PROGRESS BAR */
+.progress-bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 6px 0;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--gold);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+/* BTN */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  border-radius: var(--radius-sm);
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  text-align: center;
+}
+.btn-gold {
+  background: var(--gold);
+  color: var(--black);
+}
+.btn-gold:hover { background: var(--gold-dark); color: var(--cream); }
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--border-strong);
+  color: var(--text-muted);
+}
+
+/* HIGHLIGHT ROW */
+.highlight-row {
+  background: var(--gold-light);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+.highlight-row-label { font-size: 12px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.highlight-row-value { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 600; color: var(--gold-dark); }
+.highlight-row-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+/* STATUS INDICATOR */
+.status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+.status-green { background: var(--success); }
+.status-amber { background: var(--warning); }
+.status-red { background: var(--danger); }
+
+/* SUMMARY ANALYSIS */
+.analysis-block {
+  background: var(--black);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 14px;
+}
+.analysis-block .card-title { color: var(--cream); }
+.analysis-block .gold-line { }
+.analysis-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.analysis-row:last-child { border-bottom: none; }
+.analysis-row-label { font-size: 13px; color: rgba(250,247,244,0.55); }
+.analysis-row-value { font-size: 15px; font-weight: 500; color: var(--gold); }
+
+/* RESPONSIVE */
+@media (max-width: 400px) {
+  .field-row { grid-template-columns: 1fr; }
+  .field-row-3 { grid-template-columns: 1fr 1fr; }
+  .result-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ANIMATIONS */
+.fade-in { animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.number-anim { transition: all 0.3s ease; }
+/* ===== TAB GUADAGNO AGENTE ===== */
+#tab-agente input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:var(--border-strong);border-radius:3px;outline:none;margin-top:4px;}
+#tab-agente input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:var(--gold);cursor:pointer;border:3px solid #fff;box-shadow:0 0 0 1px var(--gold);}
+#tab-agente input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--gold);cursor:pointer;border:3px solid #fff;}
+.seg-row{display:flex;background:var(--warm);border:1px solid var(--border);border-radius:var(--radius-sm);padding:4px;gap:4px;}
+.ag-seg{flex:1;background:none;border:0;color:var(--text-muted);font-family:'Jost',sans-serif;font-size:13px;padding:9px 6px;border-radius:6px;cursor:pointer;transition:all .15s;}
+.ag-seg.active{background:var(--gold);color:#fff;font-weight:500;}
+.adv-btn{background:none;border:1px solid var(--border);color:var(--text-muted);font-family:'Jost',sans-serif;font-size:13px;padding:10px 14px;border-radius:var(--radius-sm);cursor:pointer;}
+.adv-btn:hover{border-color:var(--gold);color:var(--gold-dark);}
+.ag-adv{display:none;margin-top:14px;}
+.ag-adv.open{display:block;}
+.ag-shares{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.ag-shares .input-wrap input{padding:9px 8px;font-size:14px;}
+@media(max-width:520px){.ag-shares{grid-template-columns:repeat(2,1fr);}}
+.alert-good{background:rgba(45,122,79,0.07);border-color:var(--success);color:#1a5a35;}
+.alert-warn{background:rgba(196,136,10,0.07);border-color:var(--warning);color:#7a5008;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">Arkés Network</div>
+  <h1>Simulatore Strategico</h1>
+  <div class="header-sub">Piano MLM · Analisi Economica · Scenari</div>
+</div>
+
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="showTab('kit')">Kit & Prezzi</button>
+  <button class="nav-tab" onclick="showTab('rete')">Simulatore Rete</button>
+  <button class="nav-tab" onclick="showTab('agente')">Guadagno Agente</button>
+  <button class="nav-tab" onclick="showTab('utile')">Utile Netto</button>
+  <button class="nav-tab" onclick="showTab('eventi')">Comunicazione</button>
+  <button class="nav-tab" onclick="showTab('analisi')">Analisi SWOT</button>
+</div>
+
+<div class="main">
+
+<!-- ==================== TAB 1: KIT & PREZZI ==================== -->
+<div id="tab-kit" class="section active fade-in">
+
+  <div class="card">
+    <div class="card-title">Configurazione Kit</div>
+    <div class="card-subtitle">Inserisci i costi reali e il prezzo di vendita</div>
+    <div class="gold-line"></div>
+
+    <div class="field-group">
+      <label class="field-label">Nome kit</label>
+      <div class="input-wrap">
+        <input type="text" id="kit-nome" class="no-prefix" value="Kit Network" oninput="calcKit()">
+      </div>
+    </div>
+
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <div class="section-divider-text">Costi di produzione</div>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <div class="field-row">
+      <div>
+        <label class="field-label">Prodotti fisici (€)</label>
+        <div class="input-wrap">
+          <span class="input-prefix">€</span>
+          <input type="number" id="costo-prodotti" value="137" min="0" oninput="calcKit()">
+        </div>
+      </div>
+      <div>
+        <label class="field-label">Costo voucher (€)</label>
+        <div class="input-wrap">
+          <span class="input-prefix">€</span>
+          <input type="number" id="costo-voucher" value="210" min="0" oninput="calcKit()">
+        </div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div>
+        <label class="field-label">Materiali / pack</label>
+        <div class="input-wrap">
+          <span class="input-prefix">€</span>
+          <input type="number" id="costo-materiali" value="18" min="0" oninput="calcKit()">
+        </div>
+      </div>
+      <div>
+        <label class="field-label">Spedizione / logistica</label>
+        <div class="input-wrap">
+          <span class="input-prefix">€</span>
+          <input type="number" id="costo-spedizione" value="12" min="0" oninput="calcKit()">
+        </div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div>
+        <label class="field-label">Marketing allocato</label>
+        <div class="input-wrap">
+          <span class="input-prefix">€</span>
+          <input type="number" id="costo-marketing" value="35" min="0" oninput="calcKit()">
+        </div>
+      </div>
+      <div>
+        <label class="field-label">Overhead (quota)</label>
+        <div class="input-wrap">
+          <span class="input-prefix">€</span>
+          <input type="number" id="costo-overhead" value="28" min="0" oninput="calcKit()">
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <div class="section-divider-text">Pricing</div>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <div class="field-row">
+      <div>
+        <label class="field-label">Prezzo di vendita (€)</label>
+        <div class="input-wrap">
+          <span class="input-prefix">€</span>
+          <input type="number" id="prezzo-kit" value="1000" min="1" oninput="calcKit()">
+        </div>
+      </div>
+      <div>
+        <label class="field-label">Commissione Ambassador</label>
+        <div class="input-wrap">
+          <span class="input-prefix">€</span>
+          <input type="number" id="comm-diretta" value="120" min="0" oninput="calcKit()">
+        </div>
+      </div>
+    </div>
+
+    <div class="slider-wrap">
+      <div class="slider-header">
+        <div class="slider-label">Utile netto target</div>
+        <div class="slider-value" id="target-pct-label">5%</div>
+      </div>
+      <input type="range" id="target-pct" min="1" max="40" value="5" oninput="updateSlider('target-pct','target-pct-label','%'); calcKit()">
+    </div>
+
+  </div>
+
+  <!-- RISULTATI KIT -->
+  <div class="card" id="kit-results">
+    <div class="card-title">Analisi Economica Kit</div>
+    <div class="gold-line"></div>
+
+    <div class="result-grid">
+      <div class="result-box">
+        <div class="result-label">Costo totale</div>
+        <div class="result-value number-anim" id="r-costo">€440</div>
+        <div class="result-sub">produzione + marketing</div>
+      </div>
+      <div class="result-box">
+        <div class="result-label">Margine lordo</div>
+        <div class="result-value number-anim" id="r-margine-lordo">€560</div>
+        <div class="result-sub" id="r-margine-pct-lordo">56%</div>
+      </div>
+    </div>
+
+    <div class="result-grid">
+      <div class="result-box">
+        <div class="result-label">Dopo commissione</div>
+        <div class="result-value number-anim" id="r-dopo-comm">€440</div>
+        <div class="result-sub" id="r-dopo-comm-pct">44%</div>
+      </div>
+      <div class="result-box highlight">
+        <div class="result-label">Utile netto stimato</div>
+        <div class="result-value number-anim" id="r-utile-netto">€440</div>
+        <div class="result-sub" id="r-utile-pct">44%</div>
+      </div>
+    </div>
+
+    <div id="kit-alert" class="alert alert-good">
+      <strong>✅ Margine sostenibile.</strong> Il kit è strutturato correttamente.
+    </div>
+
+    <div class="highlight-row">
+      <div class="highlight-row-label">Prezzo minimo per 5% utile netto</div>
+      <div class="highlight-row-value number-anim" id="r-prezzo-minimo">€XXX</div>
+      <div class="highlight-row-sub" id="r-prezzo-minimo-sub">basato sui costi inseriti</div>
+    </div>
+
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <div class="section-divider-text">Breakdown costi</div>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Voce</th>
+          <th class="td-right">Importo</th>
+          <th class="td-right">% su prezzo</th>
+        </tr>
+      </thead>
+      <tbody id="breakdown-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- MULTIPLO KIT -->
+  <div class="card">
+    <div class="card-title">Confronto Multi-Kit</div>
+    <div class="card-subtitle">Analisi parallela di 4 fasce prezzo</div>
+    <div class="gold-line"></div>
+    <div id="multi-kit-table"></div>
+  </div>
+
+</div>
+
+<!-- ==================== TAB 2: SIMULATORE RETE ==================== -->
+<div id="tab-rete" class="section fade-in">
+ <div class="rt-dash">
+
+  <!-- METRICHE TOP (sempre visibili) -->
+  <div class="rt-metrics-bar rt-glass">
+    <div class="rt-metrics-head">
+      <div class="rt-metrics-title">Proiezione rete — <b id="rt-res-focus">Tu</b></div>
+      <div class="rt-focus-bar">
+        <span class="rt-focus-pill" id="rt-focus-name">Tu</span>
+        <button class="rt-chip rt-mini" onclick="rtDeselect()">Torna a Tu</button>
+      </div>
+    </div>
+    <div class="rt-metrics">
+      <div class="rt-metric"><div class="rt-metric-l">Membri attivi</div><div class="rt-metric-v number-anim" id="rt-r-attivi">0</div><div class="rt-metric-s" id="rt-r-tot-sub">su 0 totali</div></div>
+      <div class="rt-metric"><div class="rt-metric-l">Vol. rete/mese</div><div class="rt-metric-v number-anim" id="rt-r-vol">€0</div><div class="rt-metric-s">commissionabile</div></div>
+      <div class="rt-metric"><div class="rt-metric-l">Comm. lorda/mese</div><div class="rt-metric-v number-anim" id="rt-r-lordo">€0</div><div class="rt-metric-s">prima ritenuta</div></div>
+      <div class="rt-metric rt-metric-hi"><div class="rt-metric-l">Netto/mese</div><div class="rt-metric-v number-anim" id="rt-r-netto">€0</div><div class="rt-metric-s">dopo ritenuta</div></div>
+      <div class="rt-metric"><div class="rt-metric-l">Netto/anno</div><div class="rt-metric-v number-anim" id="rt-r-anno">€0</div><div class="rt-metric-s">stima 12 mesi</div></div>
+    </div>
+  </div>
+
+  <!-- CORPO: sinistra | mappa | destra -->
+  <div class="rt-body">
+
+    <!-- SINISTRA: comandi, legenda, blocchi -->
+    <div class="rt-col-left">
+      <div class="rt-panel rt-glass">
+        <div class="rt-panel-title">Comandi</div>
+        <div class="rt-panel-sub">Aggiungi con <b>+</b> su un profilo o seleziona e usa il suo popover.</div>
+        <div class="rt-toolbar">
+          <button class="rt-chip rt-chip-gold" onclick="rtAddQuick(RT.focusId)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+            Aggiungi alla vista
+          </button>
+          <div class="rt-chip-row">
+            <button class="rt-chip" onclick="rtExport()">Esporta</button>
+            <button class="rt-chip" onclick="document.getElementById('rt-import').click()">Importa</button>
+          </div>
+          <input type="file" id="rt-import" accept="application/json" style="display:none" onchange="rtImport(event)">
+          <button class="rt-chip" onclick="rtParamsOpen()">⚙ Parametri piano</button>
+          <button class="rt-chip" onclick="rtResetDemo()">Reset demo</button>
+        </div>
+      </div>
+
+      <div class="rt-panel rt-glass">
+        <div class="rt-panel-title">Legenda</div>
+        <div class="rt-legend">
+          <div class="rt-leg"><span class="rt-leg-dot" style="background:#bcb3a6"></span>Sotto 150€</div>
+          <div class="rt-leg"><span class="rt-leg-dot" style="background:#C9A87C"></span>Attivo</div>
+          <div class="rt-leg"><span class="rt-leg-dot" style="background:#E0A94B"></span>5k+</div>
+          <div class="rt-leg"><span class="rt-leg-dot" style="background:#E08A2E"></span>10k+</div>
+          <div class="rt-leg"><span class="rt-leg-dot" style="background:#D9683A"></span>25k+</div>
+          <div class="rt-leg"><span class="rt-leg-dot" style="background:#C4687A"></span>50k+</div>
+          <div class="rt-leg"><span class="rt-leg-dot" style="background:#9B3B57"></span>100k+</div>
+          <div class="rt-leg"><span class="rt-leg-line" style="background:#E8821E"></span>Linea produttiva</div>
+        </div>
+      </div>
+
+      <div class="rt-panel rt-glass">
+        <div class="rt-panel-title">Blocchi & Linee</div>
+        <div class="rt-panel-sub">3 linee per blocco. Si sbloccano le 3 successive solo riempiendo in profondità le attive.</div>
+        <div class="rt-blocks" id="rt-blocks"></div>
+      </div>
+    </div>
+
+    <!-- CENTRO: mappa -->
+    <div class="rt-col-center">
+      <div class="rt-panel rt-glass rt-canvas-card">
+        <div class="rt-canvas-head">
+          <div class="rt-focus-bar">Vista: <span class="rt-focus-pill" id="rt-focus-name2">Tu</span></div>
+          <div class="rt-zoom">
+            <button onclick="rtZoom(-1)" aria-label="Riduci">−</button>
+            <button onclick="rtZoom(1)" aria-label="Ingrandisci">+</button>
+            <button onclick="rtZoom(0)" aria-label="Adatta">⤢</button>
+          </div>
+        </div>
+        <div class="rt-canvas" id="rt-canvas">
+          <div class="rt-hint">Trascina per spostare · Ctrl + rotella per zoom · clicca un profilo per aprirlo</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DESTRA: analisi profilo selezionato -->
+    <div class="rt-col-right">
+      <div class="rt-panel rt-glass">
+        <div class="rt-panel-title">Analisi profilo</div>
+        <div id="rt-side"><div class="rt-side-empty">Seleziona un profilo per vederne la rete e i dati.</div></div>
+      </div>
+      <div class="rt-panel rt-glass">
+        <div class="rt-panel-title">Dettaglio per profondità</div>
+        <table class="data-table" style="margin-top:8px">
+          <thead><tr><th>Liv.</th><th class="td-right">Attivi</th><th class="td-right">%</th><th class="td-right">Comm./mese</th></tr></thead>
+          <tbody id="rt-depth-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+ </div>
+</div>
+
+<!-- ==================== TAB 3: UTILE NETTO ==================== -->
+<!-- ==================== TAB: GUADAGNO AGENTE (vista onesta, da mostrare agli agenti) ==================== -->
+<div id="tab-agente" class="section fade-in">
+
+  <div class="card">
+    <div class="card-title">Prima vendi. Poi la rete aggiunge.</div>
+    <div class="card-subtitle">Il guadagno parte dal margine sui prodotti che vendi tu. La rete è un'aggiunta nel tempo. Imposta i prezzi del prodotto: i kit possono variare.</div>
+    <div class="gold-line"></div>
+
+    <div class="field-row">
+      <div>
+        <label class="field-label">Prezzo pubblico</label>
+        <div class="input-wrap"><span class="input-prefix">€</span>
+          <input type="number" id="ag-pub" value="150" min="0" oninput="calcAgente()"></div>
+      </div>
+      <div>
+        <label class="field-label">Tuo prezzo d'acquisto</label>
+        <div class="input-wrap"><span class="input-prefix">€</span>
+          <input type="number" id="ag-acq" value="80" min="0" oninput="calcAgente()"></div>
+      </div>
+    </div>
+
+    <div class="result-box highlight" style="margin-top:4px;">
+      <div class="result-label">Margine che resta a te su ogni vendita</div>
+      <div class="result-value" id="ag-margin">€70</div>
+      <div class="result-sub">prezzo pubblico − tuo acquisto</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Scenario di rete</div>
+    <div class="gold-line"></div>
+    <div class="seg-row">
+      <button class="ag-seg active" onclick="setAgScen('prudente',this)">Prudente</button>
+      <button class="ag-seg" onclick="setAgScen('medio',this)">Medio</button>
+      <button class="ag-seg" onclick="setAgScen('ottimistico',this)">Ottimistico</button>
+    </div>
+    <div class="card-subtitle" id="ag-scen-hint" style="margin-top:12px;margin-bottom:0;">Ipotesi prudenti: poche persone restano attive e duplicano lentamente. Lo scenario più realistico per iniziare.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">La tua attività</div>
+    <div class="card-subtitle">Parametri che dipendono da te e dal tuo impegno.</div>
+    <div class="gold-line"></div>
+
+    <div class="slider-wrap">
+      <div class="slider-header"><span class="slider-label">Vendite personali / mese</span><span class="slider-value" id="ag-own-v">8</span></div>
+      <input type="range" id="ag-own" min="0" max="40" value="8" step="1" oninput="calcAgente()">
+    </div>
+    <div class="slider-wrap">
+      <div class="slider-header"><span class="slider-label">Diretti attivi (max 3)</span><span class="slider-value" id="ag-dir-v">3</span></div>
+      <input type="range" id="ag-dir" min="0" max="3" value="3" step="1" oninput="calcAgente()">
+    </div>
+    <div class="slider-wrap" style="margin-bottom:6px;">
+      <div class="slider-header"><span class="slider-label">Vendite per agente / mese</span><span class="slider-value" id="ag-as-v">3</span></div>
+      <input type="range" id="ag-as" min="0" max="10" value="3" step="0.5" oninput="calcAgente()">
+    </div>
+    <div class="alert" id="ag-qual"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Il tuo guadagno stimato</div>
+    <div class="card-subtitle">Al mese. Il netto ha già scalato la ritenuta sulle provvigioni.</div>
+    <div class="gold-line"></div>
+
+    <div class="result-grid">
+      <div class="result-box highlight">
+        <div class="result-label">Margine tue vendite</div>
+        <div class="result-value" id="ag-retail">€0</div>
+        <div class="result-sub" id="ag-retail-sub">la parte certa</div>
+      </div>
+      <div class="result-box">
+        <div class="result-label">Provvigioni rete</div>
+        <div class="result-value" id="ag-netw">€0</div>
+        <div class="result-sub" id="ag-netw-sub">—</div>
+      </div>
+    </div>
+    <div class="result-grid">
+      <div class="result-box">
+        <div class="result-label">Lordo / mese</div>
+        <div class="result-value" id="ag-gross">€0</div>
+        <div class="result-sub">prima della ritenuta</div>
+      </div>
+      <div class="result-box good">
+        <div class="result-label">Netto stimato / mese</div>
+        <div class="result-value" id="ag-net">€0</div>
+        <div class="result-sub" id="ag-net-sub">—</div>
+      </div>
+    </div>
+
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <div class="section-divider-text">Dettaglio per livello</div>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <table class="data-table">
+      <thead><tr><th>Livello</th><th class="td-right">Agenti</th><th class="td-right">Vendite</th><th class="td-right">Quota</th><th class="td-right">Provvigione</th></tr></thead>
+      <tbody id="ag-levels"></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Stesso impegno, tre scenari</div>
+    <div class="card-subtitle">Il guadagno reale dipende da quante persone restano davvero attive.</div>
+    <div class="gold-line"></div>
+    <div class="result-grid" id="ag-scen-grid" style="grid-template-columns:1fr 1fr 1fr;"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Cosa serve davvero</div>
+    <div class="gold-line"></div>
+    <div class="result-grid">
+      <div class="result-box">
+        <div class="result-label">Rientro dal kit</div>
+        <div class="result-value" id="ag-be">—</div>
+        <div class="result-sub" id="ag-be-sub">solo con le tue vendite</div>
+      </div>
+      <div class="result-box">
+        <div class="result-label">Tempo per costruire</div>
+        <div class="result-value" id="ag-time">—</div>
+        <div class="result-sub">lavoro costante</div>
+      </div>
+    </div>
+    <div class="alert alert-info">In ogni rete la maggioranza si colloca nelle fasce basse: <strong>punta prima a vendere bene tu</strong>. Le provvigioni di rete sono un'aggiunta, non la base.</div>
+  </div>
+
+  <div class="card">
+    <button class="adv-btn" onclick="document.getElementById('ag-adv').classList.toggle('open')">⚙ Piano compensi (admin)</button>
+    <div id="ag-adv" class="ag-adv">
+      <div class="gold-line"></div>
+      <div class="card-subtitle">Provvigione % per livello, sul prezzo d'acquisto. Somma attuale: <strong id="ag-sh-sum" style="color:var(--gold-dark)">25%</strong> (tetto consigliato 25%). Liv. 1 = provvigione diretta; liv. 2–8 = residui matrice.</div>
+      <div class="ag-shares" id="ag-shares"></div>
+      <div class="field-row" style="margin-top:16px;">
+        <div>
+          <label class="field-label">Costo kit ingresso</label>
+          <div class="input-wrap"><span class="input-prefix">€</span><input type="number" id="ag-kit" value="490" min="0" oninput="calcAgente()"></div>
+        </div>
+        <div>
+          <label class="field-label">Ritenuta provvigioni (%)</label>
+          <div class="input-wrap"><input type="number" id="ag-rit" class="no-prefix" value="17.94" min="0" max="50" step="0.01" oninput="calcAgente()"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-size:11.5px;color:var(--text-light);line-height:1.65;padding:4px 6px 8px;">
+    <strong style="color:var(--text-muted);">Simulazione illustrativa — non è una promessa di guadagno.</strong> I risultati dipendono dall'impegno e dal numero di persone che restano attive: in qualsiasi rete la maggioranza si colloca nelle fasce più basse. Il guadagno principale nasce dalla vendita di prodotti a clienti finali; le provvigioni di rete sono secondarie. Conforme al principio della Legge 173/2005: nessun guadagno dal solo reclutamento. Stime fiscali indicative, da validare con un commercialista. Nessun obbligo d'acquisto a carico dell'agente.
+  </div>
+
+</div>
+
+<div id="tab-utile" class="section fade-in">
+
+  <div class="card">
+    <div class="card-title">Conto Economico Arkés</div>
+    <div class="card-subtitle">Proiezione mensile dell'azienda</div>
+    <div class="gold-line"></div>
+
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <div class="section-divider-text">Volumi di vendita mensili</div>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <div class="field-row">
+      <div>
+        <label class="field-label">Kit Network venduti</label>
+        <div class="input-wrap">
+          <input type="number" id="v-kit-network" class="no-prefix" value="10" min="0" oninput="calcUtile()">
+        </div>
+      </div>
+      <div>
+        <label class="field-label">Kit medi (€250) venduti</label>
+        <div class="input-wrap">
+          <input type="number" id="v-kit-medi" class="no-prefix" value="20" min="0" oninput="calcUtile()">
+        </div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div>
+        <label class="field-label">Abbonamenti Club attivi</label>
+        <div class="input-wrap">
+          <input type="number" id="v-abbonamenti" class="no-prefix" value="50" min="0" oninput="calcUtile()">
+        </div>
+      </div>
+      <div>
+        <label class="field-label">Canone abbonamento (€)</label>
+        <div class="input-wrap">
+          <span class="input-prefix">€</span>
+          <input type="number" id="v-canone" value="49" min="0" oninput="calcUtile()">
+        </div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div>
+        <label class="field-label">Partner B2B attivi</label>
+        <div class="input-wrap">
+          <input type="number" id="v-partner" class="no-prefix" value="3" min="0" oninput="calcUtile()">
+        </div>
+      </div>
+      <div>
+        <label class="field-label">Canone mensile partner (€)</label>
+        <div class="input-wrap">
+          <span class="input-prefix">€</span>
+          <input type="number" id="v-canone-partner" value="299" min="0" oninput="calcUtile()">
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <div class="section-divider-text">Costi fissi mensili Arkés</div>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <div class="field-row">
+      <div>
+        <label class="field-label">Personale / gestione</label>
+        <div class="input-wrap">
+          <span class="input-prefix">€</span>
+          <input type="number" id="c-personale" value="2500" min="0" oninput="calcUtile()">
+        </div>
+      </div>
+      <div>
+        <label class="field-label">Piattaforma / tech</label>
+        <div class="input-wrap">
+          <span class="input-prefix">€</span>
+          <input type="number" id="c-tech" value="300" min="0" oninput="calcUtile()">
+        </div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div>
+        <label class="field-label">Marketing / eventi</label>
+        <div class="input-wrap">
+          <span class="input-prefix">€</span>
+          <input type="number" id="c-marketing-fix" value="800" min="0" oninput="calcUtile()">
+        </div>
+      </div>
+      <div>
+        <label class="field-label">Legale / compliance</label>
+        <div class="input-wrap">
+          <span class="input-prefix">€</span>
+          <input type="number" id="c-legale" value="200" min="0" oninput="calcUtile()">
+        </div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div>
+        <label class="field-label">% payout commissioni</label>
+        <div class="input-wrap">
+          <input type="number" id="pct-payout" class="no-prefix with-suffix" value="25" min="5" max="50" oninput="calcUtile()">
+          <span class="input-suffix">%</span>
+        </div>
+      </div>
+      <div>
+        <label class="field-label">% tasse / contributi</label>
+        <div class="input-wrap">
+          <input type="number" id="pct-tasse" class="no-prefix with-suffix" value="30" min="10" max="50" oninput="calcUtile()">
+          <span class="input-suffix">%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTO ECONOMICO -->
+  <div class="analysis-block">
+    <div class="card-title" style="color:var(--cream); margin-bottom:4px;">Conto Economico Mensile</div>
+    <div class="gold-line"></div>
+    <div id="ce-rows"></div>
+    <div class="analysis-row" style="margin-top:12px; padding-top:12px; border-top: 1px solid rgba(201,168,124,0.3);">
+      <div class="analysis-row-label" style="font-size:15px; color:var(--cream);">Utile netto stimato</div>
+      <div class="analysis-row-value" style="font-size:22px;" id="r-utile-finale">€—</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Punto di Pareggio</div>
+    <div class="gold-line"></div>
+    <div id="breakeven-content"></div>
+  </div>
+
+  <!-- SCENARI -->
+  <div class="card">
+    <div class="card-title">Scenari Comparativi</div>
+    <div class="card-subtitle">Pessimistico · Realistico · Ottimistico</div>
+    <div class="gold-line"></div>
+    <div id="scenari-table"></div>
+  </div>
+
+</div>
+
+<!-- ==================== TAB 4: COMUNICAZIONE ==================== -->
+<div id="tab-eventi" class="section fade-in">
+
+  <div class="card">
+    <div class="card-title">Budget Comunicazione & Eventi</div>
+    <div class="card-subtitle">Stima ROI per canale</div>
+    <div class="gold-line"></div>
+
+    <div class="field-row">
+      <div>
+        <label class="field-label">Budget mensile totale (€)</label>
+        <div class="input-wrap">
+          <span class="input-prefix">€</span>
+          <input type="number" id="budget-comm" value="2000" min="0" oninput="calcComm()">
+        </div>
+      </div>
+      <div>
+        <label class="field-label">Ticket medio kit venduto (€)</label>
+        <div class="input-wrap">
+          <span class="input-prefix">€</span>
+          <input type="number" id="ticket-comm" value="1000" min="1" oninput="calcComm()">
+        </div>
+      </div>
+    </div>
+
+    <div class="slider-wrap">
+      <div class="slider-header">
+        <div class="slider-label">% budget su social/digital</div>
+        <div class="slider-value" id="pct-digital-label">40%</div>
+      </div>
+      <input type="range" id="pct-digital" min="0" max="100" value="40" oninput="updateSlider('pct-digital','pct-digital-label','%'); calcComm()">
+    </div>
+
+    <div class="slider-wrap">
+      <div class="slider-header">
+        <div class="slider-label">% budget su eventi</div>
+        <div class="slider-value" id="pct-eventi-label">35%</div>
+      </div>
+      <input type="range" id="pct-eventi" min="0" max="100" value="35" oninput="updateSlider('pct-eventi','pct-eventi-label','%'); calcComm()">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Analisi per Canale</div>
+    <div class="gold-line"></div>
+    <div id="canali-table"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Piano Eventi Consigliato</div>
+    <div class="gold-line"></div>
+    <ul class="tip-list" id="eventi-list">
+      <li><span class="tip-icon">🥂</span><div class="tip-text"><strong>Arkés Discovery Evening (mensile)</strong> — evento serata per 20-30 persone. Location: salone Prati dopo orario. Costo ~€300. Target: potenziali Ambassador. ROI atteso: 3-5 kit venduti = €3.000-5.000.</div></li>
+      <li><span class="tip-icon">💼</span><div class="tip-text"><strong>Beauty Business Breakfast (bimestrale)</strong> — colazione per estetiste e professionisti del settore. Location: coworking o hotel boutique. Costo ~€600. Target: potenziali Partner B2B. ROI atteso: 1-2 centri onboardati = €600-1.200/mese ricorrenti.</div></li>
+      <li><span class="tip-icon">📱</span><div class="tip-text"><strong>Live Instagram settimanale</strong> — 30 minuti di tutorial + presentazione kit. Costo: zero. Attiva il codice referral dell'Ambassador ospite. ROI: lead generation continua.</div></li>
+      <li><span class="tip-icon">🎁</span><div class="tip-text"><strong>Gifting influencer micro (trimestrale)</strong> — Kit Discovery (€49) a 10-20 micro-influencer beauty Roma. Costo ~€490-980. Target: 10.000-50.000 follower locali. ROI atteso: 5-15 Ambassador nuovi.</div></li>
+      <li><span class="tip-icon">🏪</span><div class="tip-text"><strong>Pop-up nei centri partner</strong> — quando la rete B2B cresce, attivare presentazioni dedicate nei saloni partner. Costo marginale. Effetto: co-marketing e vendita diretta nei loro spazi.</div></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">ROI Stimato per Scenario</div>
+    <div class="gold-line"></div>
+    <div id="roi-eventi"></div>
+  </div>
+
+</div>
+
+<!-- ==================== TAB 5: ANALISI SWOT ==================== -->
+<div id="tab-analisi" class="section fade-in">
+
+  <div class="card">
+    <div class="card-title">Punti di Forza</div>
+    <div class="gold-line"></div>
+    <ul class="tip-list">
+      <li><span class="tip-icon">✅</span><div class="tip-text"><strong>Brand già esistente con reputazione</strong> — 1.931 recensioni a 4.8★ su Treatwell. Non stai partendo da zero: hai credibilità, clienti fidelizzati e due sedi fisiche.</div></li>
+      <li><span class="tip-icon">✅</span><div class="tip-text"><strong>Linea prodotti propria</strong> — Arkés Cosmetics è un asset competitivo. I prodotti white-label ti danno margini alti (55%+) e differenziazione rispetto a chi rivende brand terzi.</div></li>
+      <li><span class="tip-icon">✅</span><div class="tip-text"><strong>Modello ricorrente</strong> — abbonamenti Club + canoni Partner B2B generano entrate mensili stabili indipendenti dalle vendite una-tantum.</div></li>
+      <li><span class="tip-icon">✅</span><div class="tip-text"><strong>Kit ad alto valore percepito</strong> — il Kit Network a €1.000 include prodotti + voucher per valore percepito di €950+. Chi compra capisce l'affare.</div></li>
+      <li><span class="tip-icon">✅</span><div class="tip-text"><strong>Infrastruttura tech già operativa</strong> — n8n + Railway + GitHub + Google Calendar. Non devi costruire da zero: puoi automatizzare il CRM network con il sistema esistente.</div></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Criticità & Rischi</div>
+    <div class="gold-line"></div>
+    <ul class="tip-list">
+      <li><span class="tip-icon">⚠️</span><div class="tip-text"><strong>Rischio legale schema piramidale</strong> — il meccanismo originale (vendere solo dopo 3 reclutati) era illegale in Italia. La soluzione adottata (vendita immediata, 3 diretti solo per sbloccare commissioni rete) è corretta. Va riportata esattamente nel contratto Ambassador.</div></li>
+      <li><span class="tip-icon">⚠️</span><div class="tip-text"><strong>Payout sostenibilità</strong> — il piano commissioni distribuisce fino al 25% del volume in commissioni dirette + rete. Richiede che il margine lordo sui prodotti/servizi rimanga sopra il 55%. Monitorare mensilmente.</div></li>
+      <li><span class="tip-icon">⚠️</span><div class="tip-text"><strong>Tasso di inattività Ambassador</strong> — nei sistemi MLM il 60-70% dei membri diventa inattivo entro 6 mesi. Il sistema deve prevedere meccanismi di riattivazione e il rango deve scadere dopo 3 mesi di inattività.</div></li>
+      <li><span class="tip-icon">⚠️</span><div class="tip-text"><strong>Dipendenza dalla rete di sedi</strong> — i voucher servizi nel kit si riscattano solo nelle sedi Arkés (per ora). Se la capacità produttiva del salone non scala, i voucher non possono crescere proporzionalmente.</div></li>
+      <li><span class="tip-icon">⚠️</span><div class="tip-text"><strong>Onboarding Ambassador</strong> — un kit da €1.000 richiede un processo di onboarding serio. Chi compra deve sapere come vendere. Senza formazione, l'Ambassador si scoraggia e diventa inattivo.</div></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Soluzioni Implementate</div>
+    <div class="gold-line"></div>
+    <ul class="tip-list">
+      <li><span class="tip-icon">🔧</span><div class="tip-text"><strong>Fix legale commissioni</strong> — vendita al dettaglio immediata all'acquisto del kit. I 3 diretti sblocano solo le commissioni residuali di rete. Conforme D.Lgs. 114/98 e normative AGCM sugli MLM.</div></li>
+      <li><span class="tip-icon">🔧</span><div class="tip-text"><strong>Struttura a 4 kit</strong> — da €49 a €1.000. Permette l'accesso a diversi profili: consumer, ambassador base, ambassador full. Non tutti devono investire €1.000 per entrare nel sistema.</div></li>
+      <li><span class="tip-icon">🔧</span><div class="tip-text"><strong>Buy-back guarantee</strong> — prodotti fisici rimborsabili all'80% entro 12 mesi. Rimuove la barriera psicologica all'acquisto del kit e è obbligatoria per legge.</div></li>
+      <li><span class="tip-icon">🔧</span><div class="tip-text"><strong>Regola 70/30 monitorata</strong> — il 70% del fatturato di ogni Ambassador deve derivare da clienti finali. Dashboard automatica segnala chi è sotto soglia prima di ogni payout.</div></li>
+      <li><span class="tip-icon">🔧</span><div class="tip-text"><strong>Rango con scadenza</strong> — 3 mesi di inattività = rango sospeso, 6 mesi = rango azzerato. Mantiene la rete viva e il volume reale. Prevenire inflazione di membri fantasma.</div></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Opportunità di Crescita</div>
+    <div class="gold-line"></div>
+    <ul class="tip-list">
+      <li><span class="tip-icon">🚀</span><div class="tip-text"><strong>Espansione geografica B2B</strong> — ogni città italiana con 3+ centri estetici indipendenti è un mercato potenziale. Il modello B2B non richiede una sede fisica Arkés: basta un Ambassador Elite locale.</div></li>
+      <li><span class="tip-icon">🚀</span><div class="tip-text"><strong>Linea prodotti professionale</strong> — i prodotti professionali nel kit aprono la porta a una distribuzione B2B indipendente dal network. Rivenditori tradizionali + rete MLM = due canali paralleli.</div></li>
+      <li><span class="tip-icon">🚀</span><div class="tip-text"><strong>Voucher digitali</strong> — quando la rete B2B ha 10+ centri, i voucher nel kit diventano spendibili ovunque in Italia. Valore percepito del kit aumenta senza costi aggiuntivi.</div></li>
+      <li><span class="tip-icon">🚀</span><div class="tip-text"><strong>Corporate wellness</strong> — pacchetti aziendali (kit regalo per dipendenti, convenzioni aziende) aprono un canale B2B diverso dall'estetica. Ticket alto, ciclo di acquisto annuale.</div></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Roadmap Consigliata</div>
+    <div class="gold-line"></div>
+    <ul class="tip-list">
+      <li><span class="tip-icon">📅</span><div class="tip-text"><strong>Mese 1-2:</strong> Definire contratto Ambassador, costruire landing page onboarding, configurare CRM tracking commissioni. Reclutare 10 beta Ambassador tra clienti fidelizzate.</div></li>
+      <li><span class="tip-icon">📅</span><div class="tip-text"><strong>Mese 3-4:</strong> Primo Discovery Evening. Attivare sistema commissioni live. Prime vendite Ambassador. Monitorare ratio 70/30. Raccogliere feedback e iterare il kit.</div></li>
+      <li><span class="tip-icon">📅</span><div class="tip-text"><strong>Mese 5-6:</strong> Approccio ai primi 3 centri Partner B2B. Pitch deck con dati reali. Dashboard CRM condivisa in beta. Primo Ambassador raggiunge rango Silver.</div></li>
+      <li><span class="tip-icon">📅</span><div class="tip-text"><strong>Mese 7-12:</strong> 50+ Ambassador attivi, 10+ Partner B2B, primo Ambassador Elite. Valutare espansione in 2-3 città fuori Roma. Aggiornare kit con voucher spendibili nei centri partner.</div></li>
+    </ul>
+  </div>
+
+</div>
+
+</div><!-- end main -->
+
+<script>
+// ==================== UTILITIES ====================
+function fmt(n) {
+  if (isNaN(n) || n === null) return '—';
+  const abs = Math.abs(n);
+  if (abs >= 1000) return '€' + n.toLocaleString('it-IT', {maximumFractionDigits:0});
+  return '€' + n.toLocaleString('it-IT', {maximumFractionDigits:0});
+}
+function fmtPct(n) { return isNaN(n) ? '—' : n.toFixed(1) + '%'; }
+function getVal(id) { return parseFloat(document.getElementById(id).value) || 0; }
+
+function updateSlider(sliderId, labelId, suffix) {
+  document.getElementById(labelId).textContent = document.getElementById(sliderId).value + suffix;
+}
+
+function setEl(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+function showTab(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ==================== TAB 1: KIT ====================
+function calcKit() {
+  const cp = getVal('costo-prodotti');
+  const cv = getVal('costo-voucher');
+  const cm = getVal('costo-materiali');
+  const cs = getVal('costo-spedizione');
+  const cmk = getVal('costo-marketing');
+  const co = getVal('costo-overhead');
+  const prezzo = getVal('prezzo-kit');
+  const comm = getVal('comm-diretta');
+  const targetPct = getVal('target-pct');
+
+  const costoTot = cp + cv + cm + cs + cmk + co;
+  const margLordo = prezzo - costoTot;
+  const margLordoPct = prezzo > 0 ? (margLordo / prezzo * 100) : 0;
+  const dopoComm = margLordo - comm;
+  const dopoCommPct = prezzo > 0 ? (dopoComm / prezzo * 100) : 0;
+  // Stima utile netto: 30% tasse su dopoComm
+  const utileNetto = dopoComm * 0.70;
+  const utileNettoPct = prezzo > 0 ? (utileNetto / prezzo * 100) : 0;
+
+  // Prezzo minimo per target%
+  // utileNetto = (prezzo - costoTot - comm) * 0.70 >= prezzo * target/100
+  // 0.70*prezzo - 0.70*costoTot - 0.70*comm >= prezzo * target/100
+  // prezzo*(0.70 - target/100) >= 0.70*(costoTot + comm)
+  const a = 0.70 - targetPct / 100;
+  let prezzoMin = a > 0 ? Math.ceil(0.70 * (costoTot + comm) / a) : null;
+
+  setEl('r-costo', fmt(costoTot));
+  setEl('r-margine-lordo', fmt(margLordo));
+  setEl('r-margine-pct-lordo', fmtPct(margLordoPct));
+  setEl('r-dopo-comm', fmt(dopoComm));
+  setEl('r-dopo-comm-pct', fmtPct(dopoCommPct));
+  setEl('r-utile-netto', fmt(utileNetto));
+  setEl('r-utile-pct', fmtPct(utileNettoPct));
+
+  if (prezzoMin) {
+    setEl('r-prezzo-minimo', '€' + prezzoMin.toLocaleString('it-IT'));
+    setEl('r-prezzo-minimo-sub', 'per avere ' + targetPct + '% utile netto (post tasse)');
+  } else {
+    setEl('r-prezzo-minimo', 'N/D');
+    setEl('r-prezzo-minimo-sub', 'target non raggiungibile con questa struttura');
+  }
+
+  // Color alert
+  const alertEl = document.getElementById('kit-alert');
+  if (utileNettoPct >= targetPct) {
+    alertEl.className = 'alert alert-good';
+    alertEl.innerHTML = '<strong>✅ Margine sostenibile.</strong> Utile netto ' + fmtPct(utileNettoPct) + ' supera il target del ' + targetPct + '%.';
+  } else if (utileNettoPct > 0) {
+    alertEl.className = 'alert alert-warn';
+    alertEl.innerHTML = '<strong>⚠️ Margine sotto target.</strong> Utile netto ' + fmtPct(utileNettoPct) + ' sotto il target del ' + targetPct + '%. Prezzo minimo consigliato: €' + (prezzoMin || '?') + '.';
+  } else {
+    alertEl.className = 'alert alert-bad';
+    alertEl.innerHTML = '<strong>❌ In perdita.</strong> I costi superano il prezzo. Rivedere struttura o aumentare il prezzo a minimo €' + (prezzoMin || '?') + '.';
+  }
+
+  // Breakdown table
+  const items = [
+    { label: 'Prodotti fisici', val: cp },
+    { label: 'Voucher servizi', val: cv },
+    { label: 'Materiali / packaging', val: cm },
+    { label: 'Spedizione / logistica', val: cs },
+    { label: 'Marketing allocato', val: cmk },
+    { label: 'Overhead', val: co },
+    { label: 'Commissione Ambassador', val: comm },
+    { label: 'Tasse stimate (30%)', val: dopoComm * 0.30 },
+  ];
+  const tbody = document.getElementById('breakdown-tbody');
+  tbody.innerHTML = items.map(i => `
+    <tr>
+      <td>${i.label}</td>
+      <td class="td-right td-gold">${fmt(i.val)}</td>
+      <td class="td-right td-muted">${fmtPct(prezzo > 0 ? i.val / prezzo * 100 : 0)}</td>
+    </tr>
+  `).join('') + `
+    <tr class="total-row">
+      <td>Utile netto stimato</td>
+      <td class="td-right td-gold">${fmt(utileNetto)}</td>
+      <td class="td-right td-gold">${fmtPct(utileNettoPct)}</td>
+    </tr>`;
+
+  // Multi-kit comparison
+  const kits = [
+    { nome: 'Kit Discover', prezzo: 49, costo: 22, comm: 12 },
+    { nome: 'Kit Ritual', prezzo: 120, costo: 60, comm: 30 },
+    { nome: 'Kit Premium', prezzo: 250, costo: 110, comm: 60 },
+    { nome: 'Kit Network', prezzo: prezzo, costo: costoTot, comm: comm },
+  ];
+  const multiEl = document.getElementById('multi-kit-table');
+  multiEl.innerHTML = `<table class="data-table">
+    <thead><tr><th>Kit</th><th class="td-right">Prezzo</th><th class="td-right">Margine</th><th class="td-right">Utile netto</th><th class="td-right">Comm.</th></tr></thead>
+    <tbody>${kits.map(k => {
+      const m = k.prezzo - k.costo;
+      const u = (m - k.comm) * 0.70;
+      const upct = k.prezzo > 0 ? u / k.prezzo * 100 : 0;
+      const cls = upct >= 5 ? 'td-gold' : 'td-muted';
+      return `<tr>
+        <td>${k.nome}</td>
+        <td class="td-right">${fmt(k.prezzo)}</td>
+        <td class="td-right td-gold">${fmtPct(m / k.prezzo * 100)}</td>
+        <td class="td-right ${cls}">${fmtPct(upct)}</td>
+        <td class="td-right td-muted">${fmt(k.comm)}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`;
+}
+
+// ==================== TAB 2: RETE ====================
+/* ==================== TAB RETE v3 — ENGINE + DASHBOARD INTERATTIVA ==================== */
+var RT = {
+  nodes:{}, rootId:'root', focusId:'root', selId:null,
+  view:{s:1,tx:0,ty:0}, seq:1, _init:false, _vol:{}, _W:600, _H:400,
+  params:{ soglia:150, satDepth:8, bonus:5, ritenuta:17.94, liv:[0,10,5,4,3,2,1.5,1,0.5] }
+};
+var RT_KEY='arkes_sim_rete_v1';
+
+/* ---------- modello ---------- */
+function rtMake(o){ return Object.assign({id:'',nome:'',parentId:null,sponsorId:null,consumo:200,vendite:0,email:'',stato:'simulato'}, o); }
+function rtAdd(o){ var id='n'+(RT.seq++); RT.nodes[id]=rtMake(Object.assign({id:id},o)); return id; }
+function rtChildren(id){ return Object.values(RT.nodes).filter(function(n){return n.parentId===id;}); }
+function rtActive(n){ return n && n.consumo >= RT.params.soglia; }
+function rtCV(n){ return rtActive(n) ? (n.consumo + n.vendite) : 0; }
+function rtSubVol(id){ if(RT._vol[id]!=null) return RT._vol[id]; var v=rtCV(RT.nodes[id]); rtChildren(id).forEach(function(c){ v+=rtSubVol(c.id); }); RT._vol[id]=v; return v; }
+function rtMaxActiveDepth(id,lvl){ var n=RT.nodes[id], m=rtActive(n)?lvl:0; rtChildren(id).forEach(function(c){ m=Math.max(m, rtMaxActiveDepth(c.id,lvl+1)); }); return m; }
+function rtBlockUnlocked(fid){
+  var legs=rtChildren(fid), map={}, prevSat=true;
+  for(var b=0; b*3<legs.length; b++){
+    var block=legs.slice(b*3,b*3+3), open=prevSat;
+    block.forEach(function(leg){ map[leg.id]=open; });
+    var sat = block.length>0 && block.every(function(leg){ return rtMaxActiveDepth(leg.id,1)>=RT.params.satDepth; });
+    prevSat = open && sat;
+  }
+  return map;
+}
+function rtEffPct(viewerId,n,d){ var base=RT.params.liv[d]||0, bonus=(n.sponsorId===viewerId)?RT.params.bonus:0; return base+bonus; }
+function rtInFocus(id){ var c=id; while(c){ if(c===RT.focusId) return true; c=RT.nodes[c]?RT.nodes[c].parentId:null; } return false; }
+function rtPayout(fid){
+  var unlocked=rtBlockUnlocked(fid), legs=rtChildren(fid);
+  var lordo=0,vol=0,att=0,tot=0,byD={};
+  legs.forEach(function(leg){
+    var open=unlocked[leg.id];
+    (function walk(id,d){
+      var n=RT.nodes[id]; tot++; if(rtActive(n)) att++;
+      var cv=rtCV(n);
+      if(open && d<=8 && cv>0){
+        var pct=rtEffPct(fid,n,d), comm=cv*pct/100; lordo+=comm; vol+=cv;
+        if(!byD[d]) byD[d]={membri:0,vol:0,comm:0,pct:RT.params.liv[d]||0};
+        byD[d].membri++; byD[d].vol+=cv; byD[d].comm+=comm;
+      }
+      rtChildren(id).forEach(function(c){ walk(c.id,d+1); });
+    })(leg.id,1);
+  });
+  return {lordo:lordo,netto:lordo*(1-RT.params.ritenuta/100),vol:vol,att:att,tot:tot,byD:byD,unlocked:unlocked,legs:legs};
+}
+function rtLegPayout(fid,legId,open){ var lordo=0; (function walk(id,d){ var n=RT.nodes[id],cv=rtCV(n); if(open&&d<=8&&cv>0) lordo+=cv*rtEffPct(fid,n,d)/100; rtChildren(id).forEach(function(c){ walk(c.id,d+1); }); })(legId,1); return lordo; }
+function rtNodeStats(nid){
+  var direct=rtChildren(nid), unlocked=rtBlockUnlocked(nid);
+  var genDir=direct.reduce(function(s,c){return s+rtCV(c);},0);
+  var tutte=rtSubVol(nid)-rtCV(RT.nodes[nid]);
+  var legs=direct.map(function(c){ return {id:c.id,nome:RT.nodes[c.id].nome,vol:rtSubVol(c.id),net:rtLegPayout(nid,c.id,unlocked[c.id])*(1-RT.params.ritenuta/100)}; })
+            .sort(function(a,b){return b.vol-a.vol;});
+  return {genDir:genDir,tutte:tutte,top:legs.slice(0,3),nLeg:legs.length};
+}
+
+/* ---------- colori / dimensioni ---------- */
+function rtColor(n){
+  if(!rtActive(n)) return '#bcb3a6';
+  var v=rtSubVol(n.id);
+  if(v>=100000) return '#9B3B57'; if(v>=50000) return '#C4687A'; if(v>=25000) return '#D9683A';
+  if(v>=10000) return '#E08A2E'; if(v>=5000) return '#E0A94B'; return '#C9A87C';
+}
+function rtRadius(id){ if(id===RT.rootId) return 30; var v=rtSubVol(id), t=Math.min(1,Math.sqrt(v)/Math.sqrt(120000)); return 16+(32-16)*t; }
+function rtInit2(s){ return (s||'').trim().slice(0,2).toUpperCase()||'?'; }
+
+/* ---------- linea accesa: top-3 reali del focus + spina dorsale ---------- */
+function rtLitEdges(){
+  var set={}, heads={}, F=RT.focusId;
+  var legs=rtChildren(F).slice().sort(function(a,b){return rtSubVol(b.id)-rtSubVol(a.id);}).slice(0,3);
+  legs.forEach(function(leg){
+    set[F+'>'+leg.id]=1; heads[leg.id]=1;
+    var cur=leg.id;
+    while(true){
+      var k=rtChildren(cur); if(!k.length) break;
+      k=k.slice().sort(function(a,b){return rtSubVol(b.id)-rtSubVol(a.id);});
+      if(rtSubVol(k[0].id)<=0 && rtCV(RT.nodes[k[0].id])<=0) break;
+      set[cur+'>'+k[0].id]=1; cur=k[0].id;
+    }
+  });
+  return {edges:set,heads:heads};
+}
+
+/* ---------- layout ---------- */
+function rtLayout(){
+  var leaf=0,maxD=0;
+  (function lay(id,d){ var n=RT.nodes[id]; n._d=d; if(d>maxD)maxD=d; var kids=rtChildren(id);
+    if(!kids.length){ n._x=leaf++; } else { kids.forEach(function(k){ lay(k.id,d+1); }); n._x=(RT.nodes[kids[0].id]._x+RT.nodes[kids[kids.length-1].id]._x)/2; } })(RT.rootId,0);
+  return {leaves:Math.max(1,leaf),maxD:maxD};
+}
+
+/* ---------- render ---------- */
+function rtApplyView(){ var svg=document.querySelector('#rt-canvas svg'); if(svg){ svg.style.transformOrigin='0 0'; svg.style.transform='translate('+RT.view.tx+'px,'+RT.view.ty+'px) scale('+RT.view.s+')'; } }
+function rtRender(){
+  RT._vol={};
+  var lay=rtLayout(), X=96,Y=108,M=58;
+  var pos={}; Object.values(RT.nodes).forEach(function(n){ pos[n.id]={x:M+n._x*X,y:M+n._d*Y}; });
+  var W=Math.max(340,(lay.leaves-1)*X+M*2), H=lay.maxD*Y+M*2; RT._W=W; RT._H=H;
+  var lit=rtLitEdges(), unlocked=rtBlockUnlocked(RT.focusId);
+
+  var edges='';
+  Object.values(RT.nodes).forEach(function(n){
+    if(!n.parentId) return;
+    var p=pos[n.parentId], c=pos[n.id], pr=rtRadius(n.parentId), cr=rtRadius(n.id), key=n.parentId+'>'+n.id;
+    var inView=rtInFocus(n.id)&&rtInFocus(n.parentId);
+    var cls='rt-edge';
+    if(lit.edges[key]) cls+=' rt-edge-lit';
+    else if(inView) cls+=' rt-edge-active';
+    if(!inView) cls+=' rt-dim';
+    var d='M'+p.x+','+(p.y+pr)+' C'+p.x+','+((p.y+c.y)/2)+' '+c.x+','+((p.y+c.y)/2)+' '+c.x+','+(c.y-cr);
+    edges+='<path class="'+cls+'" d="'+d+'"/>';
+  });
+
+  var lockedSet={};
+  Object.keys(unlocked).forEach(function(legId){ if(!unlocked[legId]){ (function w(id){ lockedSet[id]=1; rtChildren(id).forEach(function(c){w(c.id);}); })(legId); } });
+
+  var nodesHtml='';
+  Object.values(RT.nodes).forEach(function(n){
+    var c=pos[n.id], r=rtRadius(n.id), col=rtColor(n), cls='rt-node';
+    if(n.id===RT.selId) cls+=' rt-sel';
+    if(!rtInFocus(n.id)) cls+=' rt-dim';
+    if(lockedSet[n.id]) cls+=' rt-locked';
+    if(lit.heads[n.id]) cls+=' rt-pulse';
+    var fs=Math.max(10,Math.round(r*0.62));
+    var g='<g class="'+cls+'" data-id="'+n.id+'" transform="translate('+c.x+','+c.y+')">';
+    g+='<circle class="rt-node-circle" r="'+r.toFixed(1)+'" fill="'+col+'"/>';
+    g+='<text class="rt-node-init" style="font-size:'+fs+'px">'+rtInit2(n.id===RT.rootId?'Tu':n.nome)+'</text>';
+    g+='<text class="rt-node-name" y="'+(r+14)+'">'+(n.id===RT.rootId?'Tu':(n.nome||'—'))+'</text>';
+    if(rtSubVol(n.id)>0) g+='<text class="rt-node-vol" y="'+(r+26)+'">'+fmt(rtSubVol(n.id))+'</text>';
+    if(lockedSet[n.id]) g+='<text class="rt-lock" y="3">🔒</text>';
+    g+='<g class="rt-plus" data-add="'+n.id+'" transform="translate('+(r*0.72)+','+(r*0.72)+')"><circle r="9"></circle><line x1="-4" y1="0" x2="4" y2="0"></line><line x1="0" y1="-4" x2="0" y2="4"></line></g>';
+    g+='</g>'; nodesHtml+=g;
+  });
+
+  var svg='<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">'+
+    '<defs><filter id="rtGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>'+
+    '<g class="rt-edges">'+edges+'</g><g class="rt-nodes">'+nodesHtml+'</g></svg>';
+
+  var cv=document.getElementById('rt-canvas');
+  var hint=cv.querySelector('.rt-hint');
+  cv.innerHTML=svg; if(hint) cv.appendChild(hint);
+  // hover listeners (3s)
+  cv.querySelectorAll('.rt-node').forEach(function(g){
+    var id=g.getAttribute('data-id');
+    g.addEventListener('mouseenter',function(){ rtHover(id,g); });
+    g.addEventListener('mouseleave',rtHoverLeave);
+  });
+  rtApplyView();
+}
+
+/* ---------- selezione ---------- */
+function rtSelect(id){ RT.selId=id; RT.focusId=id; calcRete(); }
+function rtDeselect(){ RT.selId=null; RT.focusId=RT.rootId; rtProfileClose(); calcRete(); }
+
+/* ---------- pannello analisi (destra) ---------- */
+function rtSideRender(id){
+  var el=document.getElementById('rt-side'), n=RT.nodes[id];
+  if(!n){ el.innerHTML='<div class="rt-side-empty">Seleziona un profilo per vederne la rete.</div>'; return; }
+  var st=rtNodeStats(id), col=rtColor(n);
+  var legsHtml=st.top.map(function(l,i){ var pct=st.tutte>0?Math.round(l.vol/st.tutte*100):0;
+    return '<div class="rt-leg-row"><span class="rt-leg-rank">'+(i+1)+'</span><span style="min-width:62px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(l.nome||'—')+'</span>'+
+      '<span class="rt-leg-bar"><span class="rt-leg-fill" style="width:'+pct+'%"></span></span><span style="min-width:50px;text-align:right">'+fmt(l.vol)+'</span><span style="min-width:46px;text-align:right;color:#2d7a4f">'+fmt(l.net)+'</span></div>';
+  }).join('') || '<div class="rt-side-empty">Nessuna linea diretta ancora.</div>';
+  el.innerHTML=
+    '<div class="rt-side-head"><div class="rt-side-av" style="background:'+col+'">'+(id===RT.rootId?'Tu':rtInit2(n.nome))+'</div>'+
+      '<div><div class="rt-side-nm">'+(id===RT.rootId?'Tu':(n.nome||'—'))+'</div><div class="rt-side-meta">'+(rtActive(n)?'Attivo':'Sotto soglia')+' · consumo '+fmt(n.consumo)+(n.sponsorId===RT.rootId&&id!==RT.rootId?' · tuo diretto ★':'')+'</div></div></div>'+
+    '<div class="rt-side-stats"><div class="rt-stat"><div class="rt-stat-l">Generato diretto</div><div class="rt-stat-v">'+fmt(st.genDir)+'</div></div><div class="rt-stat"><div class="rt-stat-l">Totale tutte le reti</div><div class="rt-stat-v">'+fmt(st.tutte)+'</div></div></div>'+
+    '<div class="rt-legs-mini"><div class="rt-stat-l" style="margin-bottom:6px">3 linee migliori · volume · netto €</div>'+legsHtml+'</div>'+
+    '<button class="rt-chip" style="margin-top:6px" onclick="rtProfileOpen(\''+id+'\')">Apri impostazioni profilo</button>';
+}
+
+/* ---------- hover popover (dopo 3s) ---------- */
+function rtHover(id,el){ clearTimeout(RT._hoverT); clearTimeout(RT._hideT); RT._hoverT=setTimeout(function(){ rtHoverShow(id,el); },3000); }
+function rtHoverLeave(){ clearTimeout(RT._hoverT); RT._hideT=setTimeout(rtHoverHideNow,140); }
+function rtHoverHideNow(){ clearTimeout(RT._hoverT); var p=document.getElementById('rt-pop-hover'); if(p) p.classList.remove('rt-show'); }
+function rtHoverShow(id,el){
+  var n=RT.nodes[id]; if(!n) return; var st=rtNodeStats(id), pop=document.getElementById('rt-pop-hover');
+  var legsHtml=st.top.map(function(l,i){ var pct=st.tutte>0?Math.round(l.vol/st.tutte*100):0;
+    return '<div class="rt-pop-leg"><span>'+(i+1)+'. '+(l.nome||'—')+' · '+pct+'%</span><span class="rt-pop-net">'+fmt(l.net)+'</span></div>'; }).join('');
+  pop.innerHTML='<div class="rt-pop-nm">'+(id===RT.rootId?'Tu':(n.nome||'—'))+'</div>'+
+    '<div class="rt-pop-meta">'+(rtActive(n)?'Attivo':'Grigio · sotto 150€')+(n.sponsorId===RT.rootId&&id!==RT.rootId?' · tuo diretto ★':'')+'</div>'+
+    '<div class="rt-pop-row"><span>Generato diretto</span><b>'+fmt(st.genDir)+'</b></div><div class="rt-pop-row"><span>Totale tutte le reti</span><b>'+fmt(st.tutte)+'</b></div>'+
+    (legsHtml?'<div class="rt-pop-div"></div><div class="rt-stat-l" style="margin-bottom:4px">3 reti migliori (netto €)</div>'+legsHtml:'');
+  var rect=el.getBoundingClientRect();
+  pop.style.left=Math.min(window.innerWidth-290,rect.right+8)+'px';
+  pop.style.top=Math.max(8,Math.min(window.innerHeight-160,rect.top))+'px';
+  pop.classList.add('rt-show');
+}
+
+/* ---------- popover profilo (impostazioni) ---------- */
+function rtAddQuick(id){ rtSelect(id); rtProfileOpen(id,true); }
+function rtProfileOpen(id,openAdd){
+  rtHoverHideNow(); RT._ppId=id; RT._ppStato=RT.nodes[id].stato;
+  var n=RT.nodes[id], col=rtColor(n);
+  var spon=(n.sponsorId===RT.rootId&&id!==RT.rootId)?'Tuo diretto personale ★':(n.sponsorId?('Diretto di '+(RT.nodes[n.sponsorId]?RT.nodes[n.sponsorId].nome:'—')):'Radice');
+  var pp=document.getElementById('rt-pop-profile');
+  pp.innerHTML=
+   '<div class="rt-pp-head"><div class="rt-pp-av" style="background:'+col+'">'+(id===RT.rootId?'Tu':rtInit2(n.nome))+'</div>'+
+     '<div><div class="rt-pp-nm">'+(id===RT.rootId?'Tu':(n.nome||'—'))+'</div><div class="rt-pp-meta">'+spon+'</div></div>'+
+     '<button class="rt-pp-x" onclick="rtProfileClose()">×</button></div>'+
+   '<div class="rt-field"><label>Nome</label><div class="input-wrap"><input type="text" id="rt-pp-nome" class="no-prefix" value="'+(id===RT.rootId?'Tu':(n.nome||'').replace(/"/g,'&quot;'))+'" '+(id===RT.rootId?'disabled':'')+'></div></div>'+
+   '<div class="rt-row2"><div class="rt-field"><label>Consumo €/mese</label><div class="input-wrap"><span class="input-prefix">€</span><input type="number" id="rt-pp-consumo" value="'+n.consumo+'"></div></div>'+
+     '<div class="rt-field"><label>Vendite €/mese</label><div class="input-wrap"><span class="input-prefix">€</span><input type="number" id="rt-pp-vendite" value="'+n.vendite+'"></div></div></div>'+
+   '<div class="rt-field"><label>Email (registrazione)</label><div class="input-wrap"><input type="text" id="rt-pp-email" class="no-prefix" placeholder="nome@email.it" value="'+(n.email||'').replace(/"/g,'&quot;')+'"></div></div>'+
+   '<div class="rt-field"><label>Stato</label><div class="rt-seg" id="rt-pp-stato">'+
+     '<button data-s="simulato" onclick="rtPpStato(\'simulato\')">Simulato</button><button data-s="invitato" onclick="rtPpStato(\'invitato\')">Invitato</button><button data-s="verificato" onclick="rtPpStato(\'verificato\')">Verificato</button></div></div>'+
+   '<button class="rt-chip" onclick="rtPpToggleAdd()">+ Aggiungi sotto questo profilo</button>'+
+   '<div class="rt-pp-addbox" id="rt-pp-addbox">'+
+     '<div class="rt-seg" style="margin-bottom:12px"><button class="on" data-m="singolo" onclick="rtPpAddMode(\'singolo\')">Singolo</button><button data-m="veloce" onclick="rtPpAddMode(\'veloce\')">Veloce</button></div>'+
+     '<div id="rt-pp-single">'+
+       '<div class="rt-field"><label>Nome</label><div class="input-wrap"><input type="text" id="rt-pp-a-nome" class="no-prefix" placeholder="Es. Marco"></div></div>'+
+       '<div class="rt-row2"><div class="rt-field"><label>Consumo €</label><div class="input-wrap"><span class="input-prefix">€</span><input type="number" id="rt-pp-a-consumo" value="200"></div></div>'+
+       '<div class="rt-field"><label>Vendite €</label><div class="input-wrap"><span class="input-prefix">€</span><input type="number" id="rt-pp-a-vendite" value="0"></div></div></div>'+
+       '<label class="rt-check"><input type="checkbox" id="rt-pp-a-diretto"><span class="rt-check-txt"><b>È un mio diretto personale</b> (reclutato da Tu). % maggiorata col bonus diretto, anche in profondità.</span></label>'+
+     '</div>'+
+     '<div id="rt-pp-quick" style="display:none"><div class="rt-row2"><div class="rt-field"><label>Quanti</label><div class="input-wrap"><input type="number" id="rt-pp-a-qty" class="no-prefix" value="3" min="1" max="9"></div></div>'+
+       '<div class="rt-field"><label>Consumo cad. €</label><div class="input-wrap"><span class="input-prefix">€</span><input type="number" id="rt-pp-a-qcons" value="200"></div></div></div></div>'+
+     '<button class="rt-chip rt-chip-gold" onclick="rtPpAddConfirm()">Aggiungi</button>'+
+   '</div>'+
+   '<button class="rt-chip" onclick="rtPpInvita()">Invia invito di registrazione</button>'+
+   '<div class="rt-pp-foot"><button class="rt-chip" onclick="rtProfileClose()">Chiudi</button><button class="rt-chip rt-chip-gold" onclick="rtPpSave()">Salva</button></div>'+
+   (id===RT.rootId?'':'<button class="rt-del" onclick="rtPpDelete()">Elimina profilo e la sua sotto-rete</button>');
+  rtPpStato(n.stato);
+  pp.classList.add('rt-show');
+  // posizione vicino al nodo
+  var ge=document.querySelector('.rt-node[data-id="'+id+'"]');
+  if(ge && window.innerWidth>560){
+    var r=ge.getBoundingClientRect();
+    var left=r.right+12; if(left+340>window.innerWidth) left=r.left-352;
+    if(left<8) left=8;
+    pp.style.left=left+'px';
+    pp.style.top=Math.max(8,Math.min(window.innerHeight-pp.offsetHeight-8, r.top-20))+'px';
+  } else { pp.style.left=''; pp.style.top=''; }
+  if(openAdd){ document.getElementById('rt-pp-addbox').classList.add('open'); }
+}
+function rtProfileClose(){ var pp=document.getElementById('rt-pop-profile'); if(pp) pp.classList.remove('rt-show'); }
+function rtPpStato(s){ RT._ppStato=s; document.querySelectorAll('#rt-pp-stato button').forEach(function(b){ b.classList.toggle('on',b.getAttribute('data-s')===s); }); }
+function rtPpToggleAdd(){ document.getElementById('rt-pp-addbox').classList.toggle('open'); }
+function rtPpAddMode(m){ RT._ppAddMode=m; document.querySelectorAll('#rt-pp-addbox .rt-seg button').forEach(function(b){ b.classList.toggle('on',b.getAttribute('data-m')===m); }); document.getElementById('rt-pp-single').style.display=m==='singolo'?'block':'none'; document.getElementById('rt-pp-quick').style.display=m==='veloce'?'block':'none'; }
+function rtPpAddConfirm(){
+  var p=RT._ppId;
+  if(RT._ppAddMode==='veloce'){
+    var qty=Math.max(1,Math.min(9,parseInt(document.getElementById('rt-pp-a-qty').value)||1));
+    var cons=parseFloat(document.getElementById('rt-pp-a-qcons').value)||0;
+    for(var i=0;i<qty;i++) rtAdd({nome:'Membro '+(RT.seq),parentId:p,sponsorId:p,consumo:cons});
+  } else {
+    var nome=(document.getElementById('rt-pp-a-nome').value||'Nuovo').trim();
+    var consumo=parseFloat(document.getElementById('rt-pp-a-consumo').value)||0;
+    var vendite=parseFloat(document.getElementById('rt-pp-a-vendite').value)||0;
+    var diretto=document.getElementById('rt-pp-a-diretto').checked;
+    rtAdd({nome:nome,parentId:p,sponsorId:diretto?RT.rootId:p,consumo:consumo,vendite:vendite});
+  }
+  rtSave(); calcRete(); rtProfileOpen(p,true);
+}
+function rtPpSave(){
+  var id=RT._ppId, n=RT.nodes[id];
+  if(id!==RT.rootId) n.nome=(document.getElementById('rt-pp-nome').value||'—').trim();
+  n.consumo=parseFloat(document.getElementById('rt-pp-consumo').value)||0;
+  n.vendite=parseFloat(document.getElementById('rt-pp-vendite').value)||0;
+  n.email=document.getElementById('rt-pp-email').value.trim();
+  n.stato=RT._ppStato||'simulato';
+  rtSave(); calcRete(); rtProfileClose();
+}
+function rtPpInvita(){
+  var n=RT.nodes[RT._ppId];
+  var em=document.getElementById('rt-pp-email').value.trim(); if(em) n.email=em;
+  if(!n.email){ alert('Inserisci una email prima di invitare.'); return; }
+  n.stato='invitato'; rtPpStato('invitato');
+  /* STUB REGISTRAZIONE REALE — punto d'innesto n8n/Supabase:
+     fetch('https://n8n-production-8d29.up.railway.app/webhook/arkes-network-invite',
+       {method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({email:n.email,nome:n.nome,sponsorId:n.sponsorId,parentId:n.parentId})});
+     A verifica completata n8n/Supabase aggiorna lo stato a 'verificato'. */
+  rtSave(); calcRete();
+  alert('Stato impostato su "invitato". L\'invio reale dell\'email passa dal webhook n8n (stub gia predisposto).');
+}
+function rtPpDelete(){
+  var id=RT._ppId; if(id===RT.rootId) return;
+  (function del(x){ rtChildren(x).forEach(function(c){del(c.id);}); delete RT.nodes[x]; })(id);
+  rtProfileClose(); rtSave(); rtDeselect();
+}
+
+/* ---------- modale parametri (bloccante) ---------- */
+function rtParamsOpen(){
+  RT._snap=JSON.parse(JSON.stringify(RT.params));
+  var L=RT.params.liv;
+  setVal('rt-p-l1',L[1]);setVal('rt-p-l2',L[2]);setVal('rt-p-l3',L[3]);setVal('rt-p-l4',L[4]);
+  setVal('rt-p-l5',L[5]);setVal('rt-p-l6',L[6]);setVal('rt-p-l7',L[7]);setVal('rt-p-l8',L[8]);
+  setVal('rt-p-bonus',RT.params.bonus);setVal('rt-p-soglia',RT.params.soglia);setVal('rt-p-sat',RT.params.satDepth);setVal('rt-p-rit',RT.params.ritenuta);
+  document.getElementById('rt-params-bg').classList.add('rt-show');
+}
+function rtParamsSave(){
+  RT.params.liv=[0,gv('rt-p-l1'),gv('rt-p-l2'),gv('rt-p-l3'),gv('rt-p-l4'),gv('rt-p-l5'),gv('rt-p-l6'),gv('rt-p-l7'),gv('rt-p-l8')];
+  RT.params.bonus=gv('rt-p-bonus'); RT.params.soglia=gv('rt-p-soglia');
+  RT.params.satDepth=Math.max(1,Math.min(8,gv('rt-p-sat'))); RT.params.ritenuta=gv('rt-p-rit');
+  rtSave(); calcRete(); document.getElementById('rt-params-bg').classList.remove('rt-show');
+}
+function rtParamsCancel(){ if(RT._snap) RT.params=RT._snap; document.getElementById('rt-params-bg').classList.remove('rt-show'); }
+function gv(id){ var e=document.getElementById(id); return e?(parseFloat(e.value)||0):0; }
+function setVal(id,v){ var e=document.getElementById(id); if(e) e.value=v; }
+
+/* ---------- zoom / pan ---------- */
+function rtZoom(dir){
+  var cv=document.getElementById('rt-canvas'); if(dir===0){ rtFit(); return; }
+  var old=RT.view.s, ns=Math.max(0.4,Math.min(2.4,old+(dir>0?0.15:-0.15)));
+  var cx=cv.clientWidth/2, cy=cv.clientHeight/2;
+  RT.view.tx=cx-(cx-RT.view.tx)*(ns/old); RT.view.ty=cy-(cy-RT.view.ty)*(ns/old); RT.view.s=ns; rtApplyView();
+}
+function rtFit(){
+  var cv=document.getElementById('rt-canvas'); if(!cv) return;
+  var cw=cv.clientWidth||600, s=Math.max(0.4,Math.min(1.2,(cw-40)/RT._W));
+  RT.view.s=s; RT.view.tx=Math.max(10,(cw-RT._W*s)/2); RT.view.ty=18; rtApplyView();
+}
+
+/* ---------- persistenza ---------- */
+function rtSave(){ try{ localStorage.setItem(RT_KEY,JSON.stringify({nodes:RT.nodes,seq:RT.seq,params:RT.params})); }catch(e){} }
+function rtLoad(){ try{ var raw=localStorage.getItem(RT_KEY); if(!raw) return false; var d=JSON.parse(raw); if(!d.nodes||!d.nodes.root) return false; RT.nodes=d.nodes; RT.seq=d.seq||1; if(d.params) RT.params=Object.assign(RT.params,d.params); return true; }catch(e){ return false; } }
+function rtExport(){ var blob=new Blob([JSON.stringify({nodes:RT.nodes,seq:RT.seq,params:RT.params},null,2)],{type:'application/json'}); var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='arkes_rete_sim.json'; a.click(); }
+function rtImport(ev){ var f=ev.target.files[0]; if(!f) return; var r=new FileReader(); r.onload=function(){ try{ var d=JSON.parse(r.result); if(d.nodes&&d.nodes.root){ RT.nodes=d.nodes; RT.seq=d.seq||1; if(d.params)RT.params=Object.assign(RT.params,d.params); rtSave(); RT.selId=null; RT.focusId=RT.rootId; rtFit(); calcRete(); } else alert('File non valido.'); }catch(e){ alert('File non leggibile.'); } }; r.readAsText(f); ev.target.value=''; }
+function rtResetDemo(){ if(confirm('Ripristinare l\'albero demo? L\'albero corrente verra perso.')){ rtSeed(); RT.selId=null; RT.focusId=RT.rootId; rtSave(); rtFit(); calcRete(); } }
+
+/* ---------- seed demo ---------- */
+function rtSeed(){
+  RT.nodes={}; RT.seq=1;
+  RT.nodes['root']=rtMake({id:'root',nome:'Tu',parentId:null,sponsorId:null,consumo:300,vendite:1200});
+  var a=rtAdd({nome:'Anna',parentId:'root',sponsorId:'root',consumo:300,vendite:600});
+  var b=rtAdd({nome:'Bruno',parentId:'root',sponsorId:'root',consumo:250,vendite:300});
+  var c=rtAdd({nome:'Carla',parentId:'root',sponsorId:'root',consumo:200,vendite:150});
+  var a1=rtAdd({nome:'Elsa',parentId:a,sponsorId:a,consumo:300,vendite:400});
+  rtAdd({nome:'Dino',parentId:a,sponsorId:a,consumo:90,vendite:0});
+  var a11=rtAdd({nome:'Gaia',parentId:a1,sponsorId:a1,consumo:250,vendite:200});
+  rtAdd({nome:'Luca',parentId:a11,sponsorId:'root',consumo:280,vendite:300});
+  var b1=rtAdd({nome:'Sara',parentId:b,sponsorId:b,consumo:300,vendite:250});
+  rtAdd({nome:'Tina',parentId:b1,sponsorId:b1,consumo:200,vendite:100});
+  rtAdd({nome:'Omar',parentId:b,sponsorId:b,consumo:120,vendite:0});
+  rtAdd({nome:'Vera',parentId:c,sponsorId:c,consumo:300,vendite:500});
+}
+
+/* ---------- overlay DOM ---------- */
+function rtBuildOverlays(){
+  if(document.getElementById('rt-pop-hover')) return;
+  var ph=document.createElement('div'); ph.id='rt-pop-hover'; ph.className='rt-pop';
+  ph.addEventListener('mouseenter',function(){ clearTimeout(RT._hideT); });
+  ph.addEventListener('mouseleave',rtHoverLeave); document.body.appendChild(ph);
+  var pp=document.createElement('div'); pp.id='rt-pop-profile'; pp.className='rt-pp'; document.body.appendChild(pp);
+  var bg=document.createElement('div'); bg.id='rt-params-bg'; bg.className='rt-modal-bg';
+  bg.innerHTML='<div class="rt-modal"><h3>Parametri piano</h3>'+
+    '<div class="rt-modal-sub">Valori da validare con commercialista e legale. Il sistema calcola e traccia, <b>non liquida</b>. Liv. 1–8 = % residuale per profondità; il bonus diretto si somma a quella %.</div>'+
+    '<div class="rt-params-grid">'+
+    ['l1','l2','l3','l4','l5','l6','l7','l8'].map(function(k,i){ return '<div><label>L'+(i+1)+' %</label><div class="input-wrap"><input type="number" id="rt-p-'+k+'" class="no-prefix" step="0.5"></div></div>'; }).join('')+
+    '<div><label>Bonus diretto (punti %)</label><div class="input-wrap"><input type="number" id="rt-p-bonus" class="no-prefix" step="0.5"></div></div>'+
+    '<div><label>Soglia attivo €</label><div class="input-wrap"><input type="number" id="rt-p-soglia" class="no-prefix"></div></div>'+
+    '<div><label>Profondità saturazione</label><div class="input-wrap"><input type="number" id="rt-p-sat" class="no-prefix" min="1" max="8"></div></div>'+
+    '<div><label>Ritenuta %</label><div class="input-wrap"><input type="number" id="rt-p-rit" class="no-prefix" step="0.01"></div></div>'+
+    '</div>'+
+    '<div class="rt-modal-foot"><button class="btn btn-outline" onclick="rtParamsCancel()">Annulla</button><button class="btn btn-gold" onclick="rtParamsSave()">Salva</button></div></div>';
+  document.body.appendChild(bg);
+  // chiudi popover/hover cliccando fuori (non sul canvas, non sui popover/modale)
+  document.addEventListener('pointerdown',function(e){
+    if(e.target.closest('#rt-canvas')) return;
+    if(e.target.closest('#rt-pop-profile')) return;
+    if(e.target.closest('#rt-pop-hover')) return;
+    if(e.target.closest('#rt-params-bg')) return;
+    rtHoverHideNow(); rtProfileClose();
+  },true);
+}
+
+/* ---------- pan/zoom listeners ---------- */
+function rtCanvasListeners(){
+  var cv=document.getElementById('rt-canvas'); if(!cv || cv._rtBound) return; cv._rtBound=true;
+  var pan={active:false,moved:false,sx:0,sy:0,ox:0,oy:0,t:null};
+  cv.addEventListener('pointerdown',function(e){
+    if(e.button&&e.button!==0) return;
+    pan.active=true; pan.moved=false; pan.sx=e.clientX; pan.sy=e.clientY; pan.ox=RT.view.tx; pan.oy=RT.view.ty; pan.t=e.target;
+    cv.classList.add('rt-grabbing'); try{cv.setPointerCapture(e.pointerId);}catch(_){}
+  });
+  cv.addEventListener('pointermove',function(e){
+    if(!pan.active) return; var dx=e.clientX-pan.sx, dy=e.clientY-pan.sy;
+    if(Math.abs(dx)>4||Math.abs(dy)>4) pan.moved=true;
+    if(pan.moved){ RT.view.tx=pan.ox+dx; RT.view.ty=pan.oy+dy; rtApplyView(); rtHoverHideNow(); }
+  });
+  cv.addEventListener('pointerup',function(e){
+    if(!pan.active) return; pan.active=false; cv.classList.remove('rt-grabbing'); try{cv.releasePointerCapture(e.pointerId);}catch(_){}
+    if(pan.moved) return;
+    var t=pan.t, plus=t&&t.closest?t.closest('.rt-plus'):null, node=t&&t.closest?t.closest('.rt-node'):null;
+    if(plus){ rtAddQuick(plus.getAttribute('data-add')); return; }
+    if(node){ var id=node.getAttribute('data-id'); if(id===RT.selId){ rtDeselect(); } else { rtSelect(id); rtProfileOpen(id); } return; }
+    rtProfileClose(); rtDeselect();
+  });
+  cv.addEventListener('wheel',function(e){
+    if(!e.ctrlKey) return; e.preventDefault();
+    var rect=cv.getBoundingClientRect(), mx=e.clientX-rect.left, my=e.clientY-rect.top;
+    var old=RT.view.s, ns=Math.max(0.4,Math.min(2.4,old*(e.deltaY<0?1.12:0.89)));
+    RT.view.tx=mx-(mx-RT.view.tx)*(ns/old); RT.view.ty=my-(my-RT.view.ty)*(ns/old); RT.view.s=ns; rtApplyView(); rtHoverHideNow();
+  },{passive:false});
+}
+
+/* ---------- recompute + UI ---------- */
+function calcRete(){
+  if(!RT._init){ rtInit(); return; }
+  RT._vol={}; rtRender();
+  var P=rtPayout(RT.focusId), fname=RT.focusId===RT.rootId?'Tu':(RT.nodes[RT.focusId]?RT.nodes[RT.focusId].nome||'—':'—');
+  setEl('rt-res-focus',fname); setEl('rt-focus-name',fname); setEl('rt-focus-name2',fname);
+  setEl('rt-r-attivi',P.att.toLocaleString('it-IT')); setEl('rt-r-tot-sub','su '+P.tot+' totali');
+  setEl('rt-r-vol',fmt(P.vol)); setEl('rt-r-lordo',fmt(P.lordo)); setEl('rt-r-netto',fmt(P.netto)); setEl('rt-r-anno',fmt(P.netto*12));
+
+  var legs=P.legs, bh='';
+  if(!legs.length) bh='<div class="rt-side-empty">Nessuna linea diretta. Aggiungi i primi diretti.</div>';
+  for(var b=0;b*3<legs.length;b++){
+    var block=legs.slice(b*3,b*3+3), open=P.unlocked[block[0].id];
+    bh+='<div class="rt-block'+(open?'':' rt-block-locked')+'"><div class="rt-block-head"><div class="rt-block-title">Blocco '+(b+1)+' · 3 linee</div>'+
+      '<span class="rt-stato-badge '+(open?'rt-stato-verificato':'rt-stato-simulato')+'">'+(open?'Attivo':'Da sbloccare')+'</span></div><div class="rt-block-legs">'+
+      block.map(function(leg){ var d=rtMaxActiveDepth(leg.id,1), sat=d>=RT.params.satDepth, pct=Math.min(100,Math.round(d/RT.params.satDepth*100));
+        return '<div class="rt-bleg"><span class="rt-bleg-name">'+(RT.nodes[leg.id].nome||'—')+'</span><span class="rt-bleg-prog"><span class="'+(sat?'rt-sat':'')+'" style="width:'+pct+'%"></span></span><span class="rt-bleg-d">'+d+'/'+RT.params.satDepth+'</span></div>';
+      }).join('')+'</div>'+(open?'':'<div style="font-size:11px;color:var(--text-light);margin-top:8px">Si sblocca quando le 3 linee precedenti raggiungono profondità '+RT.params.satDepth+'.</div>')+'</div>';
+  }
+  document.getElementById('rt-blocks').innerHTML=bh;
+
+  var rows='';
+  for(var d=1;d<=8;d++){ var r=P.byD[d]; if(!r) continue; rows+='<tr><td>L'+d+'</td><td class="td-right">'+r.membri+'</td><td class="td-right td-muted">'+r.pct+'%</td><td class="td-right td-gold">'+fmt(r.comm)+'</td></tr>'; }
+  rows+='<tr class="total-row"><td>Tot.</td><td class="td-right">'+P.att+'</td><td class="td-right"></td><td class="td-right td-gold">'+fmt(P.lordo)+'</td></tr>';
+  document.getElementById('rt-depth-tbody').innerHTML=rows;
+
+  rtSideRender(RT.selId||RT.focusId);
+}
+
+/* ---------- init ---------- */
+function rtInit(){
+  RT._init=true; rtBuildOverlays(); rtCanvasListeners();
+  if(!rtLoad()) rtSeed();
+  RT.selId=null; RT.focusId=RT.rootId;
+  calcRete(); rtFit();
+}
+
+// ==================== TAB 3: UTILE ====================
+function calcUtile() {
+  const vkn = getVal('v-kit-network');
+  const vkm = getVal('v-kit-medi');
+  const vabb = getVal('v-abbonamenti');
+  const canone = getVal('v-canone');
+  const vpar = getVal('v-partner');
+  const canPar = getVal('v-canone-partner');
+
+  const ricKN = vkn * 1000;
+  const ricKM = vkm * 250;
+  const ricAbb = vabb * canone;
+  const ricPar = vpar * canPar;
+  const ricTot = ricKN + ricKM + ricAbb + ricPar;
+
+  const pctPayout = getVal('pct-payout') / 100;
+  const costoCommissioni = ricTot * pctPayout;
+
+  // Costo produzione stimato (45% su kit)
+  const costoProduzioneKN = vkn * 440;
+  const costoProduzioneKM = vkm * 110;
+  const costoProdTot = costoProduzioneKN + costoProduzioneKM;
+
+  const cPers = getVal('c-personale');
+  const cTech = getVal('c-tech');
+  const cMkt = getVal('c-marketing-fix');
+  const cLeg = getVal('c-legale');
+
+  const costiVariabili = costoCommissioni + costoProdTot;
+  const costiFissi = cPers + cTech + cMkt + cLeg;
+  const costiTot = costiVariabili + costiFissi;
+
+  const ebitda = ricTot - costiTot;
+  const pctTasse = getVal('pct-tasse') / 100;
+  const tasse = ebitda > 0 ? ebitda * pctTasse : 0;
+  const utileNetto = ebitda - tasse;
+  const utileNettoPct = ricTot > 0 ? utileNetto / ricTot * 100 : 0;
+
+  // CE rows
+  const ceEl = document.getElementById('ce-rows');
+  const ceItems = [
+    { label: 'Ricavi Kit Network (×' + vkn + ')', val: ricKN, tipo: 'ricavo' },
+    { label: 'Ricavi Kit medi (×' + vkm + ')', val: ricKM, tipo: 'ricavo' },
+    { label: 'Abbonamenti Club (×' + vabb + ')', val: ricAbb, tipo: 'ricavo' },
+    { label: 'Canoni Partner B2B (×' + vpar + ')', val: ricPar, tipo: 'ricavo' },
+    { label: 'RICAVI TOTALI', val: ricTot, tipo: 'subtot' },
+    { label: 'Costo produzione kit', val: -costoProdTot, tipo: 'costo' },
+    { label: 'Commissioni rete (' + (pctPayout*100).toFixed(0) + '%)', val: -costoCommissioni, tipo: 'costo' },
+    { label: 'Personale / gestione', val: -cPers, tipo: 'costo' },
+    { label: 'Tech / piattaforma', val: -cTech, tipo: 'costo' },
+    { label: 'Marketing / eventi', val: -cMkt, tipo: 'costo' },
+    { label: 'Legale / compliance', val: -cLeg, tipo: 'costo' },
+    { label: 'EBITDA', val: ebitda, tipo: 'subtot' },
+    { label: 'Tasse stimate (' + (pctTasse*100).toFixed(0) + '%)', val: -tasse, tipo: 'costo' },
+  ];
+  ceEl.innerHTML = ceItems.map(i => `
+    <div class="analysis-row">
+      <div class="analysis-row-label" style="${i.tipo === 'subtot' ? 'color:var(--cream);font-weight:500' : ''}">${i.label}</div>
+      <div class="analysis-row-value" style="${i.tipo === 'costo' ? 'color:rgba(250,247,244,0.5)' : i.tipo === 'subtot' ? 'color:var(--gold)' : ''}">${i.val >= 0 ? fmt(i.val) : '-' + fmt(-i.val)}</div>
+    </div>
+  `).join('');
+
+  const utileEl = document.getElementById('r-utile-finale');
+  utileEl.textContent = fmt(utileNetto) + ' (' + fmtPct(utileNettoPct) + ')';
+  utileEl.style.color = utileNetto >= 0 ? 'var(--gold)' : '#e05555';
+
+  // Breakeven
+  const beEl = document.getElementById('breakeven-content');
+  const costiFissiTot = costiFissi;
+  const margContribUnitario = 1000 * (1 - pctPayout - 0.44); // margine per kit dopo payout e produzione
+  const breakeven = margContribUnitario > 0 ? Math.ceil(costiFissiTot / margContribUnitario) : null;
+  beEl.innerHTML = `
+    <div class="result-grid">
+      <div class="result-box">
+        <div class="result-label">Costi fissi mensili</div>
+        <div class="result-value">${fmt(costiFissiTot)}</div>
+      </div>
+      <div class="result-box ${breakeven && breakeven <= 20 ? 'good' : 'warn'}">
+        <div class="result-label">Kit Network per pareggio</div>
+        <div class="result-value">${breakeven ? breakeven : 'N/D'}</div>
+        <div class="result-sub">kit/mese</div>
+      </div>
+    </div>
+    <div class="alert ${utileNettoPct >= 5 ? 'alert-good' : utileNettoPct >= 0 ? 'alert-warn' : 'alert-bad'}">
+      ${utileNettoPct >= 5 ? '<strong>✅ Target 5% raggiunto.</strong> ' : utileNettoPct >= 0 ? '<strong>⚠️ Sotto il 5% target.</strong> ' : '<strong>❌ In perdita.</strong> '}
+      Utile netto attuale: <strong>${fmtPct(utileNettoPct)}</strong> (${fmt(utileNetto)}/mese)
+    </div>
+  `;
+
+  // Scenari
+  const scEl = document.getElementById('scenari-table');
+  const scenari = [
+    { nome: '😓 Pessimistico', mult: 0.5, color: 'bad' },
+    { nome: '📊 Realistico', mult: 1.0, color: '' },
+    { nome: '🚀 Ottimistico', mult: 2.0, color: 'good' },
+  ];
+  scEl.innerHTML = `<table class="data-table">
+    <thead><tr><th>Scenario</th><th class="td-right">Ricavi</th><th class="td-right">Utile netto</th><th class="td-right">Margine</th></tr></thead>
+    <tbody>${scenari.map(s => {
+      const r = ricTot * s.mult;
+      const c = costiVariabili * s.mult + costiFissi;
+      const e = r - c;
+      const t = e > 0 ? e * pctTasse : 0;
+      const u = e - t;
+      const p = r > 0 ? u / r * 100 : 0;
+      return `<tr>
+        <td>${s.nome}</td>
+        <td class="td-right">${fmt(r)}</td>
+        <td class="td-right td-gold">${fmt(u)}</td>
+        <td class="td-right ${u < 0 ? '' : 'td-gold'}">${fmtPct(p)}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`;
+}
+
+// ==================== TAB 4: COMUNICAZIONE ====================
+function calcComm() {
+  const budget = getVal('budget-comm');
+  const ticket = getVal('ticket-comm');
+  const pctDigital = getVal('pct-digital') / 100;
+  const pctEventi = getVal('pct-eventi') / 100;
+  const pctResto = 1 - pctDigital - pctEventi;
+
+  const budgetDigital = budget * pctDigital;
+  const budgetEventi = budget * pctEventi;
+  const budgetAltro = budget * Math.max(0, pctResto);
+
+  const canali = [
+    {
+      nome: 'Social & Digital',
+      budget: budgetDigital,
+      cpa: 180, // costo per acquisizione stimato
+      conv: 0.03, // tasso conversione lead → kit
+      desc: 'Instagram Ads, contenuti organici, influencer micro'
+    },
+    {
+      nome: 'Eventi Discovery',
+      budget: budgetEventi,
+      cpa: 120,
+      conv: 0.12,
+      desc: 'Serate salone, beauty breakfast, pop-up'
+    },
+    {
+      nome: 'Referral & PR',
+      budget: budgetAltro,
+      cpa: 80,
+      conv: 0.18,
+      desc: 'Gifting, passaparola Ambassador, PR locale'
+    },
+  ];
+
+  const ctEl = document.getElementById('canali-table');
+  ctEl.innerHTML = `<table class="data-table">
+    <thead><tr><th>Canale</th><th class="td-right">Budget</th><th class="td-right">Lead stimati</th><th class="td-right">Kit venduti</th><th class="td-right">ROI</th></tr></thead>
+    <tbody>${canali.map(c => {
+      const lead = c.cpa > 0 ? Math.round(c.budget / c.cpa) : 0;
+      const kits = Math.round(lead * c.conv);
+      const ricavo = kits * ticket;
+      const roi = c.budget > 0 ? ((ricavo - c.budget) / c.budget * 100) : 0;
+      const roiCls = roi > 200 ? 'td-gold' : roi > 50 ? '' : 'td-muted';
+      return `<tr>
+        <td>${c.nome}<br><small class="td-muted">${c.desc}</small></td>
+        <td class="td-right">${fmt(c.budget)}</td>
+        <td class="td-right">${lead}</td>
+        <td class="td-right td-gold">${kits}</td>
+        <td class="td-right ${roiCls}">${roi.toFixed(0)}%</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`;
+
+  // ROI scenari
+  const roiEl = document.getElementById('roi-eventi');
+  const totLead = canali.reduce((a, c) => {
+    const lead = c.cpa > 0 ? Math.round(c.budget / c.cpa) : 0;
+    return a + lead;
+  }, 0);
+  const totKits = canali.reduce((a, c) => {
+    const lead = c.cpa > 0 ? Math.round(c.budget / c.cpa) : 0;
+    return a + Math.round(lead * c.conv);
+  }, 0);
+  const totRicavi = totKits * ticket;
+  const totROI = budget > 0 ? ((totRicavi - budget) / budget * 100) : 0;
+
+  roiEl.innerHTML = `
+    <div class="result-grid">
+      <div class="result-box"><div class="result-label">Budget totale</div><div class="result-value">${fmt(budget)}</div></div>
+      <div class="result-box"><div class="result-label">Lead generati</div><div class="result-value">${totLead}</div></div>
+      <div class="result-box"><div class="result-label">Kit venduti stimati</div><div class="result-value">${totKits}</div></div>
+      <div class="result-box highlight"><div class="result-label">ROI stimato</div><div class="result-value">${totROI.toFixed(0)}%</div><div class="result-sub">${fmt(totRicavi)} ricavi</div></div>
+    </div>
+    <div class="alert alert-info">
+      <strong>💡 Consiglio:</strong> Gli eventi fisici hanno il ROI più alto (conv. ~12%) perché permettono una presentazione diretta del kit. Il digital ha volume più alto ma conversione più bassa. Il mix ideale è: 35-40% eventi + 35-40% digital + 20-25% referral.
+    </div>
+  `;
+}
+
+// ==================== TAB: GUADAGNO AGENTE ====================
+var AG_SCEN = {
+  prudente:    {dup:1.3, active:0.30, hint:'Ipotesi prudenti: poche persone restano attive e duplicano lentamente. Lo scenario più realistico per iniziare.'},
+  medio:       {dup:1.9, active:0.42, hint:'Ipotesi intermedie: una parte della rete resta attiva e cresce con regolarità.'},
+  ottimistico: {dup:2.6, active:0.55, hint:'Ipotesi favorevoli: rete molto attiva e duplicazione sostenuta. Raro, da meritare nel tempo.'}
+};
+var agScen = 'prudente';
+var agShares = [10,4,3,3,2,1,1,1];
+
+function agCap(i){ return Math.pow(3, i+1); }
+function agLevels(directs, dup, act){
+  var a=[];
+  for(var i=0;i<8;i++){ a[i] = i===0 ? Math.min(directs,3) : Math.min(a[i-1]*dup, agCap(i))*act; }
+  return a;
+}
+function agCompute(scenKey){
+  var pub=getVal('ag-pub'), acq=getVal('ag-acq');
+  var own=getVal('ag-own'), dir=Math.round(getVal('ag-dir')), as=getVal('ag-as');
+  var rit=getVal('ag-rit');
+  var s=AG_SCEN[scenKey];
+  var margin=pub-acq, cv=acq;
+  var active=agLevels(dir, s.dup, s.active);
+  var retail=own*Math.max(0,margin);
+  var netw=0, rows=[];
+  for(var i=0;i<8;i++){
+    var unlocked = i===0 ? dir>=1 : dir>=3;
+    var sales=active[i]*as;
+    var quota=cv*(agShares[i]/100);
+    var earn=unlocked ? sales*quota : 0;
+    if(unlocked) netw+=earn;
+    rows.push({lvl:i+1, agents:active[i], sales:sales, quota:quota, earn:earn, unlocked:unlocked});
+  }
+  var ritImp=netw*(rit/100);
+  var total=active.reduce(function(a,b){return a+b;},0);
+  var deepest=active.reduce(function(m,v,i){return v>=0.5?i+1:m;},0);
+  return {margin:margin, retail:retail, netw:netw, net:retail+netw-ritImp, rows:rows, total:total, deepest:deepest};
+}
+function setAgScen(k, btn){
+  agScen=k;
+  document.querySelectorAll('.ag-seg').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById('ag-scen-hint').textContent=AG_SCEN[k].hint;
+  calcAgente();
+}
+function calcAgente(){
+  setEl('ag-own-v', getVal('ag-own'));
+  setEl('ag-dir-v', Math.round(getVal('ag-dir')));
+  setEl('ag-as-v', getVal('ag-as'));
+  var margin=getVal('ag-pub')-getVal('ag-acq');
+  setEl('ag-margin', fmt(margin));
+
+  var dir=Math.round(getVal('ag-dir'));
+  var r=agCompute(agScen);
+
+  var q=document.getElementById('ag-qual');
+  if(dir>=3){
+    q.className='alert alert-good';
+    q.innerHTML='<strong>Sbloccato:</strong> con 3 diretti attivi guadagni i residui di rete su tutta la profondità.';
+  } else {
+    q.className='alert alert-warn';
+    var need=3-dir;
+    q.innerHTML='Hai <strong>'+dir+'</strong> diretti attivi. I residui profondi si sbloccano a <strong>3</strong> — ne manca'+(need===1?'':'no')+' <strong>'+need+'</strong>. Intanto guadagni già dal margine e dal livello 1.';
+  }
+
+  setEl('ag-retail', fmt(r.retail));
+  setEl('ag-retail-sub', getVal('ag-own')+' vendite × '+fmt(Math.max(0,margin)));
+  setEl('ag-netw', fmt(r.netw));
+  setEl('ag-netw-sub', dir>=3 ? ('su '+Math.round(r.total).toLocaleString('it-IT')+' agenti attivi') : (dir>=1?'solo livello 1':'nessun diretto attivo'));
+  setEl('ag-gross', fmt(r.retail+r.netw));
+  setEl('ag-net', fmt(r.net));
+  setEl('ag-net-sub', '≈ '+fmt(r.net*12)+' / anno');
+
+  document.getElementById('ag-levels').innerHTML = r.rows.map(function(d){
+    return '<tr style="'+(d.unlocked?'':'opacity:.45;')+'">'+
+      '<td>Livello '+d.lvl+' '+(d.unlocked?'<span class="badge badge-gold">attivo</span>':'<span class="badge badge-red">bloccato</span>')+'</td>'+
+      '<td class="td-right">'+Math.round(d.agents).toLocaleString('it-IT')+'</td>'+
+      '<td class="td-right">'+Math.round(d.sales).toLocaleString('it-IT')+'</td>'+
+      '<td class="td-right">'+fmt(d.quota)+'</td>'+
+      '<td class="td-right" style="color:var(--gold-dark);font-weight:600;">'+(d.unlocked?fmt(d.earn):'—')+'</td></tr>';
+  }).join('');
+
+  document.getElementById('ag-scen-grid').innerHTML = Object.keys(AG_SCEN).map(function(k){
+    var rr=agCompute(k);
+    return '<div class="result-box '+(k===agScen?'highlight':'')+'">'+
+      '<div class="result-label" style="text-transform:capitalize;">'+k+'</div>'+
+      '<div class="result-value">'+fmt(rr.net)+'</div>'+
+      '<div class="result-sub">≈ '+fmt(rr.net*12)+'/anno</div></div>';
+  }).join('');
+
+  var kit=getVal('ag-kit');
+  var beUnits = margin>0 ? Math.ceil(kit/margin) : null;
+  setEl('ag-be', beUnits===null ? 'margine ≤ 0' : (beUnits+' vendite'));
+  setEl('ag-be-sub', beUnits===null ? 'alza il pubblico o abbassa l\u2019acquisto' : ('per rientrare dai '+fmt(kit)+' del kit'));
+  setEl('ag-time', r.deepest<=0 ? '—' : (r.deepest*4)+'–'+(r.deepest*8)+' mesi');
+}
+function buildAgShares(){
+  var el=document.getElementById('ag-shares');
+  el.innerHTML = agShares.map(function(v,i){
+    return '<div><label class="field-label" style="font-size:10px;">Liv. '+(i+1)+'</label>'+
+      '<div class="input-wrap"><input type="number" class="no-prefix ag-share" data-i="'+i+'" value="'+v+'" min="0" step="0.5"></div></div>';
+  }).join('');
+  document.querySelectorAll('.ag-share').forEach(function(inp){
+    inp.addEventListener('input', function(e){
+      agShares[parseInt(e.target.dataset.i)] = Math.max(0, parseFloat(e.target.value)||0);
+      setEl('ag-sh-sum', agShares.reduce(function(a,b){return a+b;},0).toLocaleString('it-IT')+'%');
+      calcAgente();
+    });
+  });
+  setEl('ag-sh-sum', agShares.reduce(function(a,b){return a+b;},0)+'%');
+}
+
+// ==================== INIT ====================
+window.onload = function() {
+  calcKit();
+  calcRete();
+  calcUtile();
+  calcComm();
+  buildAgShares();
+  calcAgente();
+};
+</script>
+</body>
+</html>
