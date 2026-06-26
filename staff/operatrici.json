@@ -674,5 +674,949 @@
       ]
     }
   ],
-  "service_meta": {}
+  "service_meta": {
+    "laser_donna_viso": {
+      "badges": [
+        {
+          "key": "top",
+          "scadenza": null
+        }
+      ],
+      "sconto": null,
+      "scontoFine": null
+    }
+  },
+  "servizi_catalogo": [
+    {
+      "id": "laser_donna_viso",
+      "cat": "Laser",
+      "nome": "Epilazione Laser – Viso Donna",
+      "durata": 15,
+      "prezzo": 15
+    },
+    {
+      "id": "laser_donna_corpo",
+      "cat": "Laser",
+      "nome": "Epilazione Laser – Corpo Donna",
+      "durata": 45,
+      "prezzo": 80
+    },
+    {
+      "id": "laser_uomo_corpo",
+      "cat": "Laser",
+      "nome": "Epilazione Laser – Corpo Uomo",
+      "durata": 45,
+      "prezzo": 80
+    },
+    {
+      "id": "laser_perm_donna",
+      "cat": "Laser",
+      "nome": "Epilazione Permanente Total Body Donna",
+      "durata": 60,
+      "prezzo": 120
+    },
+    {
+      "id": "laser_perm_uomo",
+      "cat": "Laser",
+      "nome": "Epilazione Permanente Total Body Uomo",
+      "durata": 60,
+      "prezzo": 150
+    },
+    {
+      "id": "ceretta_viso",
+      "cat": "Ceretta Viso",
+      "nome": "Ceretta Viso Completo",
+      "durata": 20,
+      "prezzo": 25
+    },
+    {
+      "id": "def_sopracciglia_ceretta",
+      "cat": "Ceretta Viso",
+      "nome": "Definizione Sopracciglia con Ceretta",
+      "durata": 15,
+      "prezzo": 10
+    },
+    {
+      "id": "def_sopracciglia_trucco",
+      "cat": "Ceretta Viso",
+      "nome": "Definizione Sopracciglia con Trucco",
+      "durata": 15,
+      "prezzo": 10
+    },
+    {
+      "id": "dep_sopracciglia_pinzetta",
+      "cat": "Ceretta Viso",
+      "nome": "Depilazione Sopracciglia con Pinzetta",
+      "durata": 10,
+      "prezzo": 10
+    },
+    {
+      "id": "ceretta_labbro",
+      "cat": "Ceretta Viso",
+      "nome": "Epilazione a Cera Labbro Superiore",
+      "durata": 10,
+      "prezzo": 5
+    },
+    {
+      "id": "filo_sopracciglia",
+      "cat": "Ceretta Viso",
+      "nome": "Filo Arabo – Sopracciglia",
+      "durata": 10,
+      "prezzo": 15
+    },
+    {
+      "id": "filo_labbro_mento",
+      "cat": "Ceretta Viso",
+      "nome": "Filo Arabo – Labbro Superiore / Mento",
+      "durata": 10,
+      "prezzo": 15
+    },
+    {
+      "id": "filo_basette",
+      "cat": "Ceretta Viso",
+      "nome": "Filo Arabo – Basette",
+      "durata": 10,
+      "prezzo": 15
+    },
+    {
+      "id": "filo_viso_tot",
+      "cat": "Ceretta Viso",
+      "nome": "Filo Arabo – Viso Totale",
+      "durata": 20,
+      "prezzo": 40
+    },
+    {
+      "id": "ceretta_glutei",
+      "cat": "Ceretta Corpo",
+      "nome": "Ceretta Glutei",
+      "durata": 15,
+      "prezzo": 15
+    },
+    {
+      "id": "ceretta_inguine_parz",
+      "cat": "Ceretta Corpo",
+      "nome": "Ceretta Inguine Parziale",
+      "durata": 15,
+      "prezzo": 10
+    },
+    {
+      "id": "ceretta_inguine_tot",
+      "cat": "Ceretta Corpo",
+      "nome": "Ceretta Inguine Totale (Donna)",
+      "durata": 20,
+      "prezzo": 15
+    },
+    {
+      "id": "ceretta_gamba_intera_inguine",
+      "cat": "Ceretta Corpo",
+      "nome": "Ceretta Gamba Intera e Inguine",
+      "durata": 30,
+      "prezzo": 30
+    },
+    {
+      "id": "ceretta_mezza_gamba_inguine",
+      "cat": "Ceretta Corpo",
+      "nome": "Ceretta Mezza Gamba e Inguine",
+      "durata": 25,
+      "prezzo": 20
+    },
+    {
+      "id": "ceretta_gambe",
+      "cat": "Ceretta Corpo",
+      "nome": "Ceretta Gambe",
+      "durata": 25,
+      "prezzo": 30
+    },
+    {
+      "id": "ceretta_braccia_ascelle",
+      "cat": "Ceretta Corpo",
+      "nome": "Ceretta Braccia o Ascelle",
+      "durata": 15,
+      "prezzo": 15
+    },
+    {
+      "id": "ceretta_total_body",
+      "cat": "Ceretta Corpo",
+      "nome": "Ceretta Total Body",
+      "durata": 60,
+      "prezzo": 55
+    },
+    {
+      "id": "ceretta_lombare",
+      "cat": "Ceretta Corpo",
+      "nome": "Ceretta Zona Lombare",
+      "durata": 15,
+      "prezzo": 12
+    },
+    {
+      "id": "ceretta_uomo_ascelle",
+      "cat": "Ceretta Uomo",
+      "nome": "Ascelle – Uomo",
+      "durata": 10,
+      "prezzo": 12
+    },
+    {
+      "id": "ceretta_uomo_braccia",
+      "cat": "Ceretta Uomo",
+      "nome": "Braccia – Uomo",
+      "durata": 20,
+      "prezzo": 20
+    },
+    {
+      "id": "ceretta_uomo_mezza_gamba",
+      "cat": "Ceretta Uomo",
+      "nome": "Mezza Gamba – Uomo",
+      "durata": 20,
+      "prezzo": 25
+    },
+    {
+      "id": "ceretta_uomo_gamba_intera",
+      "cat": "Ceretta Uomo",
+      "nome": "Gamba Intera – Uomo",
+      "durata": 30,
+      "prezzo": 35
+    },
+    {
+      "id": "ceretta_uomo_schiena_parz",
+      "cat": "Ceretta Uomo",
+      "nome": "Schiena Parziale – Uomo",
+      "durata": 20,
+      "prezzo": 25
+    },
+    {
+      "id": "ceretta_uomo_schiena_tot",
+      "cat": "Ceretta Uomo",
+      "nome": "Schiena Totale – Uomo",
+      "durata": 30,
+      "prezzo": 35
+    },
+    {
+      "id": "ceretta_uomo_addome_petto",
+      "cat": "Ceretta Uomo",
+      "nome": "Addome e Petto – Uomo",
+      "durata": 30,
+      "prezzo": 35
+    },
+    {
+      "id": "solarium_doccia",
+      "cat": "Solarium",
+      "nome": "Doccia Solare",
+      "durata": 10,
+      "prezzo": 10
+    },
+    {
+      "id": "cambio_smalto_mani",
+      "cat": "Nails",
+      "nome": "Cambio Smalto Mani",
+      "durata": 15,
+      "prezzo": 8
+    },
+    {
+      "id": "manicure",
+      "cat": "Nails",
+      "nome": "Manicure",
+      "durata": 30,
+      "prezzo": 15
+    },
+    {
+      "id": "manicure_giapponese",
+      "cat": "Nails",
+      "nome": "Manicure Giapponese",
+      "durata": 45,
+      "prezzo": 30
+    },
+    {
+      "id": "manicure_spa",
+      "cat": "Nails",
+      "nome": "Manicure SPA",
+      "durata": 45,
+      "prezzo": 40
+    },
+    {
+      "id": "manicure_semi",
+      "cat": "Nails",
+      "nome": "Manicure Semipermanente",
+      "durata": 45,
+      "prezzo": 33
+    },
+    {
+      "id": "paraffina_mani",
+      "cat": "Nails",
+      "nome": "Guanto alla Paraffina Mani",
+      "durata": 30,
+      "prezzo": 18
+    },
+    {
+      "id": "rimozione_semi_manicure",
+      "cat": "Nails",
+      "nome": "Rimozione Semipermanente + Manicure",
+      "durata": 45,
+      "prezzo": 25
+    },
+    {
+      "id": "applicazione_semi_mani",
+      "cat": "Nails",
+      "nome": "Applicazione Semipermanente Mani",
+      "durata": 30,
+      "prezzo": 22
+    },
+    {
+      "id": "rimozione_semi_manicure_semi",
+      "cat": "Nails",
+      "nome": "Rimozione + Manicure con Semipermanente",
+      "durata": 60,
+      "prezzo": 35
+    },
+    {
+      "id": "decorazione_unghie",
+      "cat": "Nails",
+      "nome": "Decorazione Unghie",
+      "durata": 20,
+      "prezzo": 10
+    },
+    {
+      "id": "cambio_smalto_piedi",
+      "cat": "Nails",
+      "nome": "Cambio Smalto Piedi",
+      "durata": 15,
+      "prezzo": 10
+    },
+    {
+      "id": "pedicure_estetico",
+      "cat": "Nails",
+      "nome": "Pedicure Estetico",
+      "durata": 30,
+      "prezzo": 28
+    },
+    {
+      "id": "pedicure_curativo",
+      "cat": "Nails",
+      "nome": "Pedicure Curativo",
+      "durata": 45,
+      "prezzo": 33
+    },
+    {
+      "id": "pedicure_completo",
+      "cat": "Nails",
+      "nome": "Pedicure Completo",
+      "durata": 45,
+      "prezzo": 33
+    },
+    {
+      "id": "applicazione_semi_piedi",
+      "cat": "Nails",
+      "nome": "Applicazione Semipermanente Piedi",
+      "durata": 30,
+      "prezzo": 22
+    },
+    {
+      "id": "pedicure_estetico_semi",
+      "cat": "Nails",
+      "nome": "Pedicure Estetico Semipermanente",
+      "durata": 45,
+      "prezzo": 40
+    },
+    {
+      "id": "pedicure_completo_semi",
+      "cat": "Nails",
+      "nome": "Pedicure Completo Semipermanente",
+      "durata": 60,
+      "prezzo": 45
+    },
+    {
+      "id": "pedicure_spa",
+      "cat": "Nails",
+      "nome": "Pedicure SPA",
+      "durata": 60,
+      "prezzo": 50
+    },
+    {
+      "id": "pedicure_spa_semi",
+      "cat": "Nails",
+      "nome": "Pedicure SPA con Semipermanente",
+      "durata": 75,
+      "prezzo": 52
+    },
+    {
+      "id": "rimozione_semi_pedicure",
+      "cat": "Nails",
+      "nome": "Rimozione Semipermanente Piedi + Pedicure",
+      "durata": 45,
+      "prezzo": 32
+    },
+    {
+      "id": "scrub_piedi",
+      "cat": "Nails",
+      "nome": "Scrub Piedi",
+      "durata": 20,
+      "prezzo": 15
+    },
+    {
+      "id": "paraffina_piedi",
+      "cat": "Nails",
+      "nome": "Trattamento alla Paraffina Piedi",
+      "durata": 30,
+      "prezzo": 18
+    },
+    {
+      "id": "maschera_piedi",
+      "cat": "Nails",
+      "nome": "Maschera Idratante Piedi",
+      "durata": 20,
+      "prezzo": 14
+    },
+    {
+      "id": "babyboomer",
+      "cat": "Nails",
+      "nome": "Babyboomer (supplemento)",
+      "durata": 20,
+      "prezzo": 10
+    },
+    {
+      "id": "rimozione_gel",
+      "cat": "Ricostruzione",
+      "nome": "Rimozione Gel",
+      "durata": 30,
+      "prezzo": 15
+    },
+    {
+      "id": "rimozione_acrilico",
+      "cat": "Ricostruzione",
+      "nome": "Rimozione Acrilico",
+      "durata": 30,
+      "prezzo": 15
+    },
+    {
+      "id": "copertura_gel",
+      "cat": "Ricostruzione",
+      "nome": "Copertura Gel Unghia Naturale",
+      "durata": 45,
+      "prezzo": 45
+    },
+    {
+      "id": "ritocco_gel",
+      "cat": "Ricostruzione",
+      "nome": "Ritocco Unghie Gel",
+      "durata": 30,
+      "prezzo": 50
+    },
+    {
+      "id": "ricostruzione_gel",
+      "cat": "Ricostruzione",
+      "nome": "Ricostruzione Unghie Gel",
+      "durata": 60,
+      "prezzo": 80
+    },
+    {
+      "id": "ricostruzione_acrigel",
+      "cat": "Ricostruzione",
+      "nome": "Ricostruzione Unghie Acrigel",
+      "durata": 60,
+      "prezzo": 80
+    },
+    {
+      "id": "ricostruzione_onicofagiche",
+      "cat": "Ricostruzione",
+      "nome": "Ricostruzione Unghie Onicofagiche",
+      "durata": 75,
+      "prezzo": 80
+    },
+    {
+      "id": "ricostruzione_singola",
+      "cat": "Ricostruzione",
+      "nome": "Ricostruzione Singola Unghia Gel",
+      "durata": 20,
+      "prezzo": 7
+    },
+    {
+      "id": "allungamento_acrilico",
+      "cat": "Ricostruzione",
+      "nome": "Allungamento Unghie Acrilico",
+      "durata": 60,
+      "prezzo": 80
+    },
+    {
+      "id": "allungamento_letto",
+      "cat": "Ricostruzione",
+      "nome": "Allungamento Letto Ungueale con Cover",
+      "durata": 75,
+      "prezzo": 65
+    },
+    {
+      "id": "copertura_gel_pedicure",
+      "cat": "Ricostruzione",
+      "nome": "Copertura Gel + Pedicure Semipermanente",
+      "durata": 75,
+      "prezzo": 55
+    },
+    {
+      "id": "ricostruzione_alluce",
+      "cat": "Ricostruzione",
+      "nome": "Ricostruzione Alluce Gel",
+      "durata": 30,
+      "prezzo": 18
+    },
+    {
+      "id": "extensions_ciglia",
+      "cat": "Ciglia & Sguardo",
+      "nome": "Extension Ciglia One to One",
+      "durata": 90,
+      "prezzo": 98
+    },
+    {
+      "id": "refill_ciglia",
+      "cat": "Ciglia & Sguardo",
+      "nome": "Refill Extension Ciglia (3 sett.)",
+      "durata": 60,
+      "prezzo": 50
+    },
+    {
+      "id": "rimozione_ciglia",
+      "cat": "Ciglia & Sguardo",
+      "nome": "Rimozione Extension Ciglia",
+      "durata": 30,
+      "prezzo": 25
+    },
+    {
+      "id": "laminazione_ciglia",
+      "cat": "Ciglia & Sguardo",
+      "nome": "Laminazione Ciglia",
+      "durata": 60,
+      "prezzo": 80
+    },
+    {
+      "id": "laminazione_ciglia_tinta",
+      "cat": "Ciglia & Sguardo",
+      "nome": "Laminazione Ciglia con Tinta",
+      "durata": 60,
+      "prezzo": 95
+    },
+    {
+      "id": "colorazione_ciglia",
+      "cat": "Ciglia & Sguardo",
+      "nome": "Colorazione Ciglia",
+      "durata": 20,
+      "prezzo": 25
+    },
+    {
+      "id": "tinta_sopracciglia",
+      "cat": "Ciglia & Sguardo",
+      "nome": "Tinta Sopracciglia",
+      "durata": 20,
+      "prezzo": 25
+    },
+    {
+      "id": "laminazione_sopracciglia",
+      "cat": "Ciglia & Sguardo",
+      "nome": "Laminazione Sopracciglia",
+      "durata": 45,
+      "prezzo": 55
+    },
+    {
+      "id": "laminazione_sopracciglia_tinta",
+      "cat": "Ciglia & Sguardo",
+      "nome": "Laminazione Sopracciglia con Tinta",
+      "durata": 50,
+      "prezzo": 70
+    },
+    {
+      "id": "colorazione_sopracciglia_henne",
+      "cat": "Ciglia & Sguardo",
+      "nome": "Colorazione Sopracciglia Henné",
+      "durata": 30,
+      "prezzo": 25
+    },
+    {
+      "id": "microblading_sopracciglia",
+      "cat": "Ciglia & Sguardo",
+      "nome": "Microblading Sopracciglia",
+      "durata": 120,
+      "prezzo": 450
+    },
+    {
+      "id": "microblading_labbra",
+      "cat": "Ciglia & Sguardo",
+      "nome": "Microblading Labbra",
+      "durata": 120,
+      "prezzo": 450
+    },
+    {
+      "id": "microblading_infracigliare",
+      "cat": "Ciglia & Sguardo",
+      "nome": "Microblading Infracigliare",
+      "durata": 90,
+      "prezzo": 300
+    },
+    {
+      "id": "pulizia_viso",
+      "cat": "Trattamenti Viso",
+      "nome": "Pulizia Viso a Vapore",
+      "durata": 50,
+      "prezzo": 60
+    },
+    {
+      "id": "trattamento_couperose",
+      "cat": "Trattamenti Viso",
+      "nome": "Trattamento Pelli con Couperose",
+      "durata": 45,
+      "prezzo": 55
+    },
+    {
+      "id": "trattamento_pelli_grasse",
+      "cat": "Trattamenti Viso",
+      "nome": "Trattamento Purificante Pelli Grasse",
+      "durata": 45,
+      "prezzo": 50
+    },
+    {
+      "id": "pulizia_fangoterapia",
+      "cat": "Trattamenti Viso",
+      "nome": "Pulizia Viso con Fangoterapia",
+      "durata": 60,
+      "prezzo": 50
+    },
+    {
+      "id": "pulizia_ultrasuoni",
+      "cat": "Trattamenti Viso",
+      "nome": "Pulizia Viso con Ultrasuoni",
+      "durata": 60,
+      "prezzo": 45
+    },
+    {
+      "id": "pulizia_vapore",
+      "cat": "Trattamenti Viso",
+      "nome": "Pulizia Viso",
+      "durata": 45,
+      "prezzo": 45
+    },
+    {
+      "id": "trattamento_glicolico",
+      "cat": "Trattamenti Viso",
+      "nome": "Acido Glicolico",
+      "durata": 45,
+      "prezzo": 75
+    },
+    {
+      "id": "trattamento_mandelico",
+      "cat": "Trattamenti Viso",
+      "nome": "Acido Mandelico",
+      "durata": 45,
+      "prezzo": 75
+    },
+    {
+      "id": "contorno_occhi",
+      "cat": "Trattamenti Viso",
+      "nome": "Drenaggio Borse e Occhiaie – Hurricane",
+      "durata": 60,
+      "prezzo": 75
+    },
+    {
+      "id": "trattamento_antietà",
+      "cat": "Trattamenti Viso",
+      "nome": "Trattamento Viso Antietà",
+      "durata": 60,
+      "prezzo": 75
+    },
+    {
+      "id": "trattamento_urto",
+      "cat": "Trattamenti Viso",
+      "nome": "Rimodellamento & Lifting",
+      "durata": 60,
+      "prezzo": 75
+    },
+    {
+      "id": "radiofrequenza_viso",
+      "cat": "Trattamenti Viso",
+      "nome": "Radiofrequenza Viso",
+      "durata": 45,
+      "prezzo": 60
+    },
+    {
+      "id": "microdermoabrasione",
+      "cat": "Trattamenti Viso",
+      "nome": "Microdermoabrasione Anti-Age",
+      "durata": 60,
+      "prezzo": 75
+    },
+    {
+      "id": "mesotech",
+      "cat": "Trattamenti Viso",
+      "nome": "Microneedling",
+      "durata": 75,
+      "prezzo": 150
+    },
+    {
+      "id": "rigenerazione_tessutale",
+      "cat": "Trattamenti Viso",
+      "nome": "Rigenerazione Tessutale",
+      "durata": 60,
+      "prezzo": 100
+    },
+    {
+      "id": "mappatura_rughe",
+      "cat": "Trattamenti Viso",
+      "nome": "Mappatura Rughe",
+      "durata": 30,
+      "prezzo": 0
+    },
+    {
+      "id": "massaggio_rilassante",
+      "cat": "Massaggi",
+      "nome": "Massaggio Rilassante",
+      "durata": 50,
+      "prezzo": 65
+    },
+    {
+      "id": "massaggio_circolatorio",
+      "cat": "Massaggi",
+      "nome": "Massaggio Circolatorio",
+      "durata": 30,
+      "prezzo": 60
+    },
+    {
+      "id": "linfodrenaggio",
+      "cat": "Massaggi",
+      "nome": "Massaggio Linfodrenante",
+      "durata": 50,
+      "prezzo": 70
+    },
+    {
+      "id": "massaggio_drenante",
+      "cat": "Massaggi",
+      "nome": "Massaggio Drenante",
+      "durata": 50,
+      "prezzo": 50
+    },
+    {
+      "id": "massaggio_decontratturante",
+      "cat": "Massaggi",
+      "nome": "Massaggio Decontratturante Schiena",
+      "durata": 50,
+      "prezzo": 70
+    },
+    {
+      "id": "massaggio_piedi",
+      "cat": "Massaggi",
+      "nome": "Massaggio Piedi Terapeutico",
+      "durata": 30,
+      "prezzo": 40
+    },
+    {
+      "id": "massaggio_viso",
+      "cat": "Massaggi",
+      "nome": "Massaggio Viso",
+      "durata": 30,
+      "prezzo": 45
+    },
+    {
+      "id": "massaggio_anticellulite",
+      "cat": "Massaggi",
+      "nome": "Massaggio Anticellulite",
+      "durata": 50,
+      "prezzo": 70
+    },
+    {
+      "id": "massaggio_antistress",
+      "cat": "Massaggi",
+      "nome": "Massaggio Antistress",
+      "durata": 30,
+      "prezzo": 50
+    },
+    {
+      "id": "massaggio_4mani",
+      "cat": "Massaggi",
+      "nome": "Massaggio a 4 Mani",
+      "durata": 40,
+      "prezzo": 120
+    },
+    {
+      "id": "massaggio_cioccolato",
+      "cat": "Massaggi",
+      "nome": "Massaggio al Cioccolato",
+      "durata": 50,
+      "prezzo": 90
+    },
+    {
+      "id": "massaggio_champagne",
+      "cat": "Massaggi",
+      "nome": "Massaggio allo Champagne",
+      "durata": 50,
+      "prezzo": 90
+    },
+    {
+      "id": "massaggio_ayurvedico",
+      "cat": "Massaggi",
+      "nome": "Massaggio Ayurvedico",
+      "durata": 45,
+      "prezzo": 80
+    },
+    {
+      "id": "stone_massage",
+      "cat": "Massaggi",
+      "nome": "Stone Massage",
+      "durata": 40,
+      "prezzo": 75
+    },
+    {
+      "id": "fanghi_massaggio",
+      "cat": "Massaggi",
+      "nome": "Fanghi e Massaggio",
+      "durata": 60,
+      "prezzo": 65
+    },
+    {
+      "id": "bendaggi_anticellulite",
+      "cat": "Corpo",
+      "nome": "Bendaggi Anticellulite",
+      "durata": 60,
+      "prezzo": 70
+    },
+    {
+      "id": "radiofrequenza_corpo",
+      "cat": "Corpo",
+      "nome": "Radiofrequenza Corpo",
+      "durata": 50,
+      "prezzo": 80
+    },
+    {
+      "id": "tonificante_rassodante",
+      "cat": "Corpo",
+      "nome": "Trattamento Tonificante e Rassodante",
+      "durata": 60,
+      "prezzo": 60
+    },
+    {
+      "id": "trattamento_drenante",
+      "cat": "Corpo",
+      "nome": "Trattamento Drenante",
+      "durata": 60,
+      "prezzo": 60
+    },
+    {
+      "id": "trattamento_anticellulite",
+      "cat": "Corpo",
+      "nome": "Trattamento Anticellulite",
+      "durata": 60,
+      "prezzo": 60
+    },
+    {
+      "id": "trattamento_dimagrante",
+      "cat": "Corpo",
+      "nome": "Trattamento Dimagrante",
+      "durata": 30,
+      "prezzo": 40
+    },
+    {
+      "id": "bendaggi_rassodanti",
+      "cat": "Corpo",
+      "nome": "Bendaggi Rassodanti",
+      "durata": 60,
+      "prezzo": 55
+    },
+    {
+      "id": "idome",
+      "cat": "Corpo",
+      "nome": "Macchinario i-DOME (Tecnologia FIR)",
+      "durata": 50,
+      "prezzo": 60
+    },
+    {
+      "id": "lpg",
+      "cat": "Corpo",
+      "nome": "LPG Endermologie Alliance",
+      "durata": 50,
+      "prezzo": 50
+    },
+    {
+      "id": "pressoterapia",
+      "cat": "Corpo",
+      "nome": "Pressoterapia",
+      "durata": 30,
+      "prezzo": 40
+    },
+    {
+      "id": "pressoterapia_bendaggi",
+      "cat": "Corpo",
+      "nome": "Pressoterapia e Bendaggi con Infrarossi",
+      "durata": 45,
+      "prezzo": 45
+    },
+    {
+      "id": "elettrostimolazione",
+      "cat": "Corpo",
+      "nome": "Elettrostimolazione",
+      "durata": 45,
+      "prezzo": 40
+    },
+    {
+      "id": "scrub_corpo",
+      "cat": "Corpo",
+      "nome": "Scrub Corpo Rigenerante",
+      "durata": 45,
+      "prezzo": 45
+    },
+    {
+      "id": "peeling_massaggio",
+      "cat": "Corpo",
+      "nome": "Peeling e Massaggio",
+      "durata": 60,
+      "prezzo": 60
+    },
+    {
+      "id": "fango_thalasso",
+      "cat": "Corpo",
+      "nome": "Fango Thalasso Terapia con Massaggio Anticellulite",
+      "durata": 60,
+      "prezzo": 70
+    },
+    {
+      "id": "trattamento_fango",
+      "cat": "Corpo",
+      "nome": "Trattamento con Fango",
+      "durata": 60,
+      "prezzo": 55
+    },
+    {
+      "id": "hurricane_corpo",
+      "cat": "Corpo",
+      "nome": "Macchinario Hurricane",
+      "durata": 60,
+      "prezzo": 75
+    },
+    {
+      "id": "cellulitrim",
+      "cat": "Corpo",
+      "nome": "Cellulitrim Omeoenergetica",
+      "durata": 60,
+      "prezzo": 70
+    },
+    {
+      "id": "endomassaggio",
+      "cat": "Corpo",
+      "nome": "Endomassaggio Vacuum",
+      "durata": 60,
+      "prezzo": 75
+    },
+    {
+      "id": "criolipolisi",
+      "cat": "Corpo",
+      "nome": "Criolipolisi",
+      "durata": 60,
+      "prezzo": 90
+    },
+    {
+      "id": "tshape",
+      "cat": "Corpo",
+      "nome": "Rimodellamento T-SHAPE",
+      "durata": 60,
+      "prezzo": 75
+    },
+    {
+      "id": "fir_vibrazionale",
+      "cat": "Corpo",
+      "nome": "FIR + Massaggio Vibrazionale",
+      "durata": 60,
+      "prezzo": 75
+    }
+  ]
 }
