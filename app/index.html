@@ -433,6 +433,7 @@ input[type="range"]::-moz-range-thumb {
 .rt-zoom button{width:32px;height:32px;border-radius:9px;border:1px solid var(--border-strong);background:rgba(255,255,255,0.7);color:var(--gold-dark);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
 .rt-zoom button:hover{border-color:var(--gold);background:var(--gold-light);}
 .rt-canvas{position:relative;height:min(76vh,760px);overflow:hidden;touch-action:pan-y;
+  -webkit-user-select:none;user-select:none;
   background:radial-gradient(circle at 28% 16%,rgba(201,168,124,0.18),transparent 42%),radial-gradient(circle at 80% 78%,rgba(196,104,122,0.12),transparent 46%),linear-gradient(160deg,#fbf8f4 0%,#f3eadf 100%);
   border-top:1px solid var(--border);cursor:grab;}
 .rt-canvas.rt-grabbing{cursor:grabbing;}
@@ -515,13 +516,16 @@ input[type="range"]::-moz-range-thumb {
 .rt-pop-leg .rt-pop-net{color:#2d7a4f;font-weight:500;}
 
 /* ---- POPOVER PROFILO (impostazioni) ---- */
-.rt-pp{position:fixed;z-index:260;width:330px;max-width:calc(100vw - 24px);max-height:84vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:18px;border-radius:18px;
-  opacity:0;transform:scale(.95) translateY(6px);pointer-events:none;transition:opacity .18s,transform .2s cubic-bezier(.34,1.56,.64,1);
-  background:rgba(255,255,255,0.86);-webkit-backdrop-filter:blur(22px) saturate(1.4);backdrop-filter:blur(22px) saturate(1.4);
+.rt-pp-backdrop{position:fixed;inset:0;z-index:255;background:rgba(28,20,16,0.22);opacity:0;pointer-events:none;transition:opacity .18s;}
+.rt-pp-backdrop.rt-show{opacity:1;pointer-events:auto;}
+.rt-pp{position:fixed;z-index:260;left:50%;top:50%;transform:translate(-50%,-50%) scale(.96);width:380px;max-width:calc(100vw - 28px);
+  max-height:min(82vh,82dvh);display:flex;flex-direction:column;overflow:hidden;padding:0;border-radius:18px;
+  opacity:0;pointer-events:none;transition:opacity .18s,transform .2s cubic-bezier(.34,1.56,.64,1);
+  background:rgba(255,255,255,0.9);-webkit-backdrop-filter:blur(22px) saturate(1.4);backdrop-filter:blur(22px) saturate(1.4);
   border:1px solid rgba(255,255,255,0.75);box-shadow:0 18px 54px rgba(28,20,16,0.26);}
-.rt-pp.rt-show{opacity:1;transform:scale(1) translateY(0);pointer-events:auto;}
-.rt-pp-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.rt-pp-scroll{display:block;}
+.rt-pp.rt-show{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto;}
+.rt-pp-head{display:flex;align-items:center;gap:10px;padding:18px 18px 0;flex:0 0 auto;margin-bottom:0;}
+.rt-pp-scroll{flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 18px;min-height:0;}
 .rt-pp-av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:500;font-size:16px;flex-shrink:0;}
 .rt-pp-nm{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--black);line-height:1.05;}
 .rt-pp-meta{font-size:11px;color:var(--text-muted);}
@@ -541,16 +545,12 @@ input[type="range"]::-moz-range-thumb {
 .rt-pp-addbox{border:1px dashed var(--border-strong);border-radius:12px;padding:13px;margin:12px 0;background:rgba(255,255,255,.4);display:none;}
 .rt-pp-addbox.open{display:block;}
 .rt-pp-divider{height:1px;background:var(--border);margin:14px 0;}
-.rt-pp-foot{display:flex;gap:9px;margin-top:6px;}
+.rt-pp-foot{display:flex;gap:9px;flex:0 0 auto;padding:14px 18px;background:rgba(255,255,255,0.92);border-top:1px solid var(--border);margin-top:0;}
 .rt-pp-foot .rt-chip{flex:1;}
 .rt-del{background:none;border:0;color:var(--danger);font-size:11.5px;font-family:'Jost',sans-serif;cursor:pointer;padding:9px;width:100%;margin-top:4px;}
 @media(max-width:560px){
-  .rt-pp{position:fixed;left:0!important;right:0;bottom:0;top:auto!important;width:100%;max-width:100%;border-radius:20px 20px 0 0;transform:translateY(40px);
-    max-height:min(84vh,84dvh);display:flex;flex-direction:column;overflow-y:hidden;padding:0;}
+  .rt-pp{left:0;right:0;top:auto;bottom:0;transform:translateY(40px);width:100%;max-width:100%;border-radius:20px 20px 0 0;}
   .rt-pp.rt-show{transform:translateY(0);}
-  .rt-pp-head{padding:18px 18px 0;flex:0 0 auto;}
-  .rt-pp-scroll{flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 18px;min-height:0;}
-  .rt-pp-foot{flex:0 0 auto;padding:14px 18px;background:rgba(255,255,255,0.92);border-top:1px solid var(--border);margin-top:0!important;}
   .rt-del{padding:9px 18px 16px;}
 }
 
@@ -1800,18 +1800,10 @@ function rtProfileOpen(id,openAdd){
    '<div class="rt-pp-foot"><button class="rt-chip" onclick="rtProfileClose()">Chiudi</button><button class="rt-chip rt-chip-gold" onclick="rtPpSave()">Salva</button></div>';
   rtPpStato(n.stato);
   pp.classList.add('rt-show');
-  // posizione vicino al nodo
-  var ge=document.querySelector('.rt-node[data-id="'+id+'"]');
-  if(ge && window.innerWidth>560){
-    var r=ge.getBoundingClientRect();
-    var left=r.right+12; if(left+340>window.innerWidth) left=r.left-352;
-    if(left<8) left=8;
-    pp.style.left=left+'px';
-    pp.style.top=Math.max(8,Math.min(window.innerHeight-pp.offsetHeight-8, r.top-20))+'px';
-  } else { pp.style.left=''; pp.style.top=''; }
+  var pb0=document.getElementById('rt-pp-backdrop'); if(pb0) pb0.classList.add('rt-show');
   if(openAdd){ document.getElementById('rt-pp-addbox').classList.add('open'); }
 }
-function rtProfileClose(){ var pp=document.getElementById('rt-pop-profile'); if(pp) pp.classList.remove('rt-show'); }
+function rtProfileClose(){ var pp=document.getElementById('rt-pop-profile'); if(pp) pp.classList.remove('rt-show'); var pb=document.getElementById('rt-pp-backdrop'); if(pb) pb.classList.remove('rt-show'); }
 function rtPpStato(s){ RT._ppStato=s; document.querySelectorAll('#rt-pp-stato button').forEach(function(b){ b.classList.toggle('on',b.getAttribute('data-s')===s); }); }
 function rtPpToggleAdd(){ var box=document.getElementById('rt-pp-addbox'); box.classList.toggle('open'); if(box.classList.contains('open')) setTimeout(function(){ box.scrollIntoView({block:'nearest',behavior:'smooth'}); },50); }
 function rtPpAddMode(m){ RT._ppAddMode=m; document.querySelectorAll('#rt-pp-addbox .rt-seg button').forEach(function(b){ b.classList.toggle('on',b.getAttribute('data-m')===m); }); document.getElementById('rt-pp-single').style.display=m==='singolo'?'block':'none'; document.getElementById('rt-pp-quick').style.display=m==='veloce'?'block':'none'; }
@@ -1920,6 +1912,8 @@ function rtBuildOverlays(){
   var ph=document.createElement('div'); ph.id='rt-pop-hover'; ph.className='rt-pop';
   ph.addEventListener('mouseenter',function(){ clearTimeout(RT._hideT); });
   ph.addEventListener('mouseleave',rtHoverLeave); document.body.appendChild(ph);
+  var pb=document.createElement('div'); pb.id='rt-pp-backdrop'; pb.className='rt-pp-backdrop';
+  pb.addEventListener('pointerdown',function(){ rtProfileClose(); }); document.body.appendChild(pb);
   var pp=document.createElement('div'); pp.id='rt-pop-profile'; pp.className='rt-pp'; document.body.appendChild(pp);
   var bg=document.createElement('div'); bg.id='rt-params-bg'; bg.className='rt-modal-bg';
   bg.innerHTML='<div class="rt-modal"><h3>Parametri piano</h3>'+
@@ -1969,7 +1963,8 @@ function rtCanvasListeners(){
     } else if(arr.length===2){
       pan.active=false; pan.singleTouch=false;
       var rect=cv.getBoundingClientRect();
-      pinch={d0:dist(arr[0],arr[1]),s0:RT.view.s,tx0:RT.view.tx,ty0:RT.view.ty,rect:rect};
+      var m0=mid(arr[0],arr[1]);
+      pinch={d0:dist(arr[0],arr[1]),s0:RT.view.s,tx0:RT.view.tx,ty0:RT.view.ty,rect:rect,mx:m0.x-rect.left,my:m0.y-rect.top};
       try{cv.setPointerCapture(e.pointerId);}catch(_){}
     }
   });
@@ -1990,9 +1985,14 @@ function rtCanvasListeners(){
     if(arr.length===2 && pinch){
       e.preventDefault();
       var d=dist(arr[0],arr[1]), m=mid(arr[0],arr[1]);
-      var ns=Math.max(0.4,Math.min(2.4,pinch.s0*(d/Math.max(1,pinch.d0))));
       var mx=m.x-pinch.rect.left, my=m.y-pinch.rect.top;
-      RT.view.tx=mx-(mx-pinch.tx0)*(ns/pinch.s0); RT.view.ty=my-(my-pinch.ty0)*(ns/pinch.s0); RT.view.s=ns;
+      var ns=Math.max(0.4,Math.min(2.4,RT.view.s*(d/Math.max(1,pinch.d0))));
+      var sRatio=ns/RT.view.s;
+      // zoom around current midpoint
+      RT.view.tx=mx-(mx-RT.view.tx)*sRatio; RT.view.ty=my-(my-RT.view.ty)*sRatio; RT.view.s=ns;
+      // plus pure translation from the midpoint having moved (two-finger drag/pan)
+      RT.view.tx+=mx-pinch.mx; RT.view.ty+=my-pinch.my;
+      pinch.d0=d; pinch.mx=mx; pinch.my=my;
       rtApplyView(); rtHoverHideNow();
     }
   },{passive:false});
